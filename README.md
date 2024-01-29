@@ -1,7 +1,7 @@
 # project1
 
-#TODOs: 
-#enhancements:
+TODOs: 
+enhancements:
 item superclass for inheritance
 inventory bag - start off with 2 pockets, can find large bag (3 slots) in map
                 certain item takes up more space (can make size an attribute of items)
