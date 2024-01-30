@@ -27,26 +27,32 @@ class Location:
     Instance Attributes:
         - long_description
         - short_description
-        - num: the numerical representation of the location
+        - location_num: the numerical representation of the location
+        - num: RANDOM NUMBER CHANGE LATER
 
     Representation Invariants:
-        - num == -1 or > 0
+        - location_num == -1 or location_num > 0
         - long_description != ''
         - short_description != ''
     """
+    location_num: int
     num: int
-    long_description: str
     short_description: str
+    long_description: str
 
-    def __init__(self, num: int, long_description: str, short_description: str) -> None:
+        def __init__(self, location_num: int, num: int, long_description: str, short_description: str) -> None:
         """Initialize a new location.
 
         # TODO Add more details here about the initialization if needed
         """
+        self.location_num = location_num
         self.num = num
         self.long_description = long_description
         self.short_description = short_description
-        self._items = []
+
+        # FOR LATER!
+        # self._items = []
+
         # NOTES:
         # Data that could be associated with each Location object:
         # a position in the world map,
@@ -236,7 +242,9 @@ class World:
         items = []
         file = items_data.readlines()
         for line in file:
-            row = [data for data in line.split()]
+            elements = line.split()
+            first_three_elements = [element for element in elements[:3]]
+            row = first_three_elements + [' '.join(elements[3:])]
             items.append(row)
         return items
 
@@ -248,3 +256,12 @@ class World:
         """
 
         # TODO: Complete this method as specified. Do not modify any of this function's specifications.
+        try:
+            location_num = self.map[x][y]
+            if location_num == -1:
+                return None
+            for location in self.locations:
+                if int(location[0]) == location_num:
+                    return Location(int(location[0]), int(location[1]), location[2], location[3])
+        except IndexError:
+            return None
