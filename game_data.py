@@ -26,6 +26,9 @@ class Location:
 
     Instance Attributes:
         - # TODO
+        - long_description
+        - short_description
+        - num: the numerical representation of the location
 
     Representation Invariants:
         - # TODO
@@ -130,6 +133,8 @@ class World:
     Instance Attributes:
         - map: a nested list representation of this world's map
         - # TODO add more instance attributes as needed; do NOT remove the map attribute
+        - locations: a nested list representation of the locations in the world
+        - items: a nested list representation of the items in the world
 
     Representation Invariants:
         - # TODO
@@ -154,6 +159,8 @@ class World:
 
         # The map MUST be stored in a nested list as described in the load_map() function's docstring below
         self.map = self.load_map(map_data)
+        self.locations = self.load_locations(location_data)
+        self.items = self.load_items(items_data)
 
         # NOTE: You may choose how to store location and item data; create your own World methods to handle these
         # accordingly. The only requirements:
@@ -172,18 +179,51 @@ class World:
 
         Return this list representation of the map.
         """
-
         # TODO: Complete this method as specified. Do not modify any of this function's specifications.
         the_map = []
-        f = map_data.readlines()
-        for line in f:
+        file = map_data.readlines()
+        for line in file:
             row = [int(num) for num in line.split()]
             the_map.append(row)
-
-        print(the_map)
         return the_map
 
     # TODO: Add methods for loading location data and item data (see note above).
+    def load_locations(self, location_data) -> list[list[str]]:
+        """
+        WRITE THE DOCSTRING BUT LIKE IT PUTS THE LOCATIONS INTO A NESTED LIST
+        AND WE CAN ACCESS SPECIFIC ATRRIBUTES WITH SPECIFIC INDEXES RAHHHHHH
+        """
+        locations = []
+        while True:
+            location_num = location_data.readline().strip()
+            if location_num == '':
+                break
+            number1 = location_data.readline().strip  # must change to int to use
+
+            short_description = location_data.readline().strip()
+
+            long_description = ''
+            while True:
+                line = location_data.readline()
+                if line == 'END\n':
+                    break
+                long_description += line
+
+            locations.append([location_num, number1, short_description, long_description])
+            # to skip the ''
+            location_data.readline()
+        return locations
+
+    def load_items(self, items_data) -> list[list[str]]:
+        """
+        WRITE DOCSTRING. CHANGES ITEMS.TXT INTO NESTED LIST
+        """
+        items = []
+        file = items_data.readlines()
+        for line in file:
+            row = [data for data in line.split()]
+            items.append(row)
+        return items
 
     # NOTE: The method below is REQUIRED. Complete it exactly as specified.
     def get_location(self, x: int, y: int) -> Optional[Location]:
