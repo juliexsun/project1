@@ -25,21 +25,28 @@ class Location:
     """A location in our text adventure game world.
 
     Instance Attributes:
-        - # TODO
         - long_description
         - short_description
         - num: the numerical representation of the location
 
     Representation Invariants:
-        - # TODO
+        - num == -1 or > 0
+        - long_description != ''
+        - short_description != ''
     """
+    num: int
+    long_description: str
+    short_description: str
 
-    def __init__(self) -> None:
+    def __init__(self, num: int, long_description: str, short_description: str) -> None:
         """Initialize a new location.
 
         # TODO Add more details here about the initialization if needed
         """
-
+        self.num = num
+        self.long_description = long_description
+        self.short_description = short_description
+        self._items = []
         # NOTES:
         # Data that could be associated with each Location object:
         # a position in the world map,
