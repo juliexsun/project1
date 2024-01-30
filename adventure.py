@@ -27,10 +27,15 @@ from game_data import World, Item, Location, Player
 if __name__ == "__main__":
     # GIVEN CODE
     # w = World(open("map.txt"), open("locations.txt"), open("items.txt"))
+
+    # testing loading methods
     with open('map.txt') as map_file, open('locations.txt') as location_file, open('items.txt') as item_file:
         w = World(map_file, location_file, item_file)
         print(w.map)
-    exit()
+        print(w.locations)
+        print(w.items)
+
+    exit()  # REMOVE THIS LINE for the program to continue executing
 
     p = Player(0, 0)  # set starting location of player; you may change the x, y coordinates here as appropriate
 
