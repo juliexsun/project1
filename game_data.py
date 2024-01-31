@@ -30,7 +30,7 @@ class Location:
         - location_num: the numerical representation of the location
         - num: RANDOM NUMBER CHANGE LATER
         - items:
-        - BALABALA DO THIS
+        - #TODO: BALABALA DO THIS
 
     Representation Invariants:
         - location_num == -1 or location_num > 0
@@ -43,13 +43,10 @@ class Location:
     long_description: str
     _items: list[str]
     actions: list[str]
-    x: int
-    y: int
 
     # does not initialize _items when using get_locations() from World class
     # must initialize separately
-    def __init__(self, location_num: int, num: int, short_description: str, long_description: str,
-                 x: int, y: int, items_list: list[list[str]] = None, map_list: list[list[int]] = None) -> None:
+    def __init__(self, location_num: int, num: int, short_description: str, long_description: str) -> None:
         """Initialize a new location.
 
         # TODO Add more details here about the initialization if needed
@@ -58,12 +55,10 @@ class Location:
         self.num = num
         self.long_description = long_description
         self.short_description = short_description
-        self.x = x
-        self.y = y
-        if items_list is not None:
-            self._items = self.available_items(items_list)
-        if map_list is not None:
-            self.actions = self.available_actions(map_list)
+        # if items_list is not None:
+        #     self._items = self.available_items(items_list)
+        # if map_list is not None:
+        #     self.actions = self.available_actions(map_list)
 
         # NOTES:
         # Data that could be associated with each Location object:
@@ -86,6 +81,7 @@ class Location:
     def available_items(self, items_list: list[list[str]]) -> list[str]:
         """
         WRITE DOCSTRING
+        # TODO: confirm specs and write this
         """
         items = []
         for item in items_list:
@@ -93,7 +89,7 @@ class Location:
                 items.append(item[3])
         return items
 
-    def available_actions(self, map_list: list[list[int]]) -> list[str]:
+    def available_actions(self, map_list: list[list[int]], x: int, y: int) -> list[str]:
         """
         Return the available actions in this location.
         The actions should depend on the items available in the location
@@ -107,13 +103,13 @@ class Location:
         # TODO: Complete this method, if you'd like or remove/replace it if you're not using it
         # implemented for movement
         actions = []
-        if self.x + 1 < len(map_list) and map_list[self.x + 1][self.y] != -1:
+        if x + 1 < len(map_list) and map_list[x + 1][y] != -1:
             actions.append('South')
-        if self.x - 1 >= 0 and map_list[self.x - 1][self.y] != -1:
+        if x - 1 >= 0 and map_list[x - 1][y] != -1:
             actions.append('North')
-        if self.y + 1 < len(map_list[self.x]) and map_list[self.x][self.y + 1] != -1:
+        if y + 1 < len(map_list[x]) and map_list[x][y + 1] != -1:
             actions.append('East')
-        if self.y - 1 >= 0 and map_list[self.x][self.y - 1] != -1:
+        if y - 1 >= 0 and map_list[x][y - 1] != -1:
             actions.append('West')
         return actions
 
@@ -122,14 +118,10 @@ class Item:
     """An item in our text adventure game world.
 
     Instance Attributes:
-        - name: the name of the item
-        - start: the start lacation
-        - target: the target location
-        - target_points: the points player can get
+        - # TODO
 
     Representation Invariants:
-        - name!= ''
-
+        - # TODO
     """
     name: str
     start: int
@@ -169,6 +161,9 @@ class Player:
         - x >= 0
         - y >= 0
     """
+    x: int
+    y: int
+    # world: ANY???? WORLD???
 
     def __init__(self, x: int, y: int, world) -> None:
         """
@@ -384,7 +379,7 @@ class World:
         file = items_data.readlines()
         for line in file:
             elements = line.split()
-            first_three_elements = [element for element in elements[:3]]
+            first_three_elements = list(elements[:3])
             row = first_three_elements + [' '.join(elements[3:])]
             items.append(row)
         return items
@@ -403,7 +398,8 @@ class World:
                 return None
             for location in self.locations:
                 if location[0] == location_num:
-                    return Location(location[0], location[1], location[2], location[3], x, y)
+                    return Location(location[0], location[1], location[2], location[3])
+            return None
         except IndexError:
             return None
 
@@ -414,3 +410,18 @@ class World:
             return self.map[x][y] != -1
         else:
             return False
+
+
+if __name__ == '__main__':
+    import doctest
+
+    doctest.testmod(verbose=True)
+
+    # When you are ready to check your work with python_ta, uncomment the following lines.
+    # (In PyCharm, select the lines below and press Ctrl/Cmd + / to toggle comments.)
+    # You can use "Run file in Python Console" to run both pytest and PythonTA,
+    # and then also test your methods manually in the console.
+    import python_ta
+    python_ta.check_all(config={
+        'max-line-length': 120
+    })
