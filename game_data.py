@@ -297,6 +297,9 @@ class World:
     Representation Invariants:
         - # TODO
     """
+    map: list[list[int]]
+    locations: list[list[str | int]]
+    items: list[list[str]]
 
     def __init__(self, map_data: TextIO, location_data: TextIO, items_data: TextIO) -> None:
         """
@@ -346,7 +349,7 @@ class World:
         return the_map
 
     # TODO: Add methods for loading location data and item data (see note above).
-    def load_locations(self, location_data) -> list[list[str]]:
+    def load_locations(self, location_data) -> list[list[int | str]]:
         """
         WRITE THE DOCSTRING BUT LIKE IT PUTS THE LOCATIONS INTO A NESTED LIST
         AND WE CAN ACCESS SPECIFIC ATRRIBUTES WITH SPECIFIC INDEXES RAHHHHHH
@@ -356,7 +359,8 @@ class World:
             location_num = location_data.readline().strip()
             if location_num == '':
                 break
-            number1 = location_data.readline().strip()  # must change to int to use
+            location_num = int(location_num)
+            number1 = int(location_data.readline().strip())
 
             short_description = location_data.readline().strip()
 
@@ -398,8 +402,9 @@ class World:
             if location_num == -1:
                 return None
             for location in self.locations:
-                if int(location[0]) == location_num:
-                    return Location(int(location[0]), int(location[1]), location[2], location[3], x, y)
+                print(location)
+                if location[0] == location_num:
+                    return Location(location[0], location[1], location[2], location[3], x, y)
         except IndexError:
             return None
 
