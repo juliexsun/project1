@@ -107,26 +107,14 @@ class Location:
         # TODO: Complete this method, if you'd like or remove/replace it if you're not using it
         # implemented for movement
         actions = []
-        try:
-            if map_list[self.x + 1][self.y] != -1:
-                actions.append('South')
-        except IndexError:
-            pass
-        try:
-            if map_list[self.x - 1][self.y] != -1:
-                actions.append('North')
-        except IndexError:
-            pass
-        try:
-            if map_list[self.x][self.y + 1] != -1:
-                actions.append('North')
-        except IndexError:
-            pass
-        try:
-            if map_list[self.x][self.y - 1] != -1:
-                actions.append('North')
-        except IndexError:
-            pass
+        if self.x + 1 < len(map_list) and map_list[self.x + 1][self.y] != -1:
+            actions.append('South')
+        if self.x - 1 >= 0 and map_list[self.x - 1][self.y] != -1:
+            actions.append('North')
+        if self.y + 1 < len(map_list[self.x]) and map_list[self.x][self.y + 1] != -1:
+            actions.append('East')
+        if self.y - 1 >= 0 and map_list[self.x][self.y - 1] != -1:
+            actions.append('West')
         return actions
 
 
