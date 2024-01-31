@@ -129,6 +129,7 @@ class Location:
             pass
         return actions
 
+
 class Item:
     """An item in our text adventure game world.
 
@@ -413,3 +414,11 @@ class World:
                     return Location(int(location[0]), int(location[1]), location[2], location[3])
         except IndexError:
             return None
+
+    def valid_location(self, x: int, y: int) -> bool:
+        """Return True if the location at (x, y) is valid and within the map boundaries.
+        """
+        if 0 <= x < len(self.map) and 0 <= y < len(self.map[0]):
+            return self.map[x][y] != -1
+        else:
+            return False
