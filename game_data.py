@@ -29,6 +29,8 @@ class Location:
         - short_description
         - location_num: the numerical representation of the location
         - num: RANDOM NUMBER CHANGE LATER
+        - items:
+        - BALABALA DO THIS
 
     Representation Invariants:
         - location_num == -1 or location_num > 0
@@ -39,8 +41,15 @@ class Location:
     num: int
     short_description: str
     long_description: str
+    _items: list[str]
+    actions: list[str]
+    x: int
+    y: int
 
-        def __init__(self, location_num: int, num: int, long_description: str, short_description: str) -> None:
+    # does not initialize _items when using get_locations() from World class
+    # must initialize separately
+    def __init__(self, location_num: int, num: int, short_description: str, long_description: str,
+                 x: int, y: int, items_list: list[list[str]] = None, map_list: list[list[int]] = None) -> None:
         """Initialize a new location.
 
         # TODO Add more details here about the initialization if needed
@@ -49,9 +58,12 @@ class Location:
         self.num = num
         self.long_description = long_description
         self.short_description = short_description
-
-        # FOR LATER!
-        # self._items = []
+        self.x = x
+        self.y = y
+        if items_list is not None:
+            self._items = self.available_items(items_list)
+        if map_list is not None:
+            self.actions = self.available_actions(map_list)
 
         # NOTES:
         # Data that could be associated with each Location object:
@@ -71,7 +83,17 @@ class Location:
 
         # TODO: Complete this method
 
-    def available_actions(self):
+    def available_items(self, items_list: list[list[str]]) -> list[str]:
+        """
+        WRITE DOCSTRING
+        """
+        items = []
+        for item in items_list:
+            if int(item[0]) == self.location_num:
+                items.append(item[3])
+        return items
+
+    def available_actions(self, map_list: list[list[int]]) -> list[str]:
         """
         Return the available actions in this location.
         The actions should depend on the items available in the location
@@ -83,7 +105,29 @@ class Location:
         # function header (e.g. add in parameters, complete the type contract) as needed
 
         # TODO: Complete this method, if you'd like or remove/replace it if you're not using it
-
+        # implemented for movement
+        actions = []
+        try:
+            if map_list[self.x + 1][self.y] != -1:
+                actions.append('South')
+        except IndexError:
+            pass
+        try:
+            if map_list[self.x - 1][self.y] != -1:
+                actions.append('North')
+        except IndexError:
+            pass
+        try:
+            if map_list[self.x][self.y + 1] != -1:
+                actions.append('North')
+        except IndexError:
+            pass
+        try:
+            if map_list[self.x][self.y - 1] != -1:
+                actions.append('North')
+        except IndexError:
+            pass
+        return actions
 
 class Item:
     """An item in our text adventure game world.
@@ -169,25 +213,25 @@ class Player:
         """
         The player chooses to go north by one step
         """
-        self.move(0, -1)
+        self.move(-1, 0)
 
     def go_south(self):
         """
         The player chooses to go south by one step
         """
-        self.move(0, 1)
+        self.move(1, 0)
 
     def go_west(self):
         """
         The player chooses to go west by one step
         """
-        self.move(1, 0)
+        self.move(0, -1)
 
     def go_east(self):
         """
         The player chooses to go east by one step
         """
-        self.move(-1, 0)
+        self.move(0, 1)
 
     # INVENTORY FUNCTIONS here:
     def pick_up_item(self, item_name):
