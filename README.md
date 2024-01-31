@@ -13,6 +13,8 @@ earn points for actions related to studying
 
 Music???? if enter room  
 
+can have hole represented as -2. may need to throw a wooden board over to fix hole  
+
 
 exam centre - drop all required items here AND points > something (AUTO WIN)  
 time machine - list of 10 books (must read correct one to activate)  
