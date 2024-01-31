@@ -31,13 +31,37 @@ if __name__ == "__main__":
     # testing loading methods
     with open('map.txt') as map_file, open('locations.txt') as location_file, open('items.txt') as item_file:
         w = World(map_file, location_file, item_file)
-        print(w.map)
-        print(w.locations)
-        print(w.items)
+        # print(w.map)
+        # print(w.locations)
+        # print(w.items)
+        map_list = w.map
+        locations_list = w.locations
+        items_list = w.items
+
+        location_object = w.get_location(1, 0)
+        print(location_object.short_description)
+
+        location_object.actions = location_object.available_actions(map_list)
+        print(location_object.actions)
+
+        location_object._items = location_object.available_items(items_list)
+        print(location_object._items)
+
+    p = Player(0, 0, w)  # set starting location of player; you may change the x, y coordinates here as appropriate
+    p.go_south()
+    print(f"{p.x}{p.y}")
+    print(w.map[p.x][p.y])
+    p.go_east()
+    print(f"{p.x}{p.y}")
+    print(w.map[p.x][p.y])
+    p.go_north()
+    print(f"{p.x}{p.y}")
+    print(w.map[p.x][p.y])
+    p.go_west()
+    print(f"{p.x}{p.y}")
+    print(w.map[p.x][p.y])
 
     exit()  # REMOVE THIS LINE for the program to continue executing
-
-    p = Player(0, 0)  # set starting location of player; you may change the x, y coordinates here as appropriate
 
     menu = ["look", "inventory", "score", "quit", "back"]
 
