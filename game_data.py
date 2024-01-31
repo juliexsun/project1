@@ -411,7 +411,7 @@ class World:
                 return None
             for location in self.locations:
                 if int(location[0]) == location_num:
-                    return Location(int(location[0]), int(location[1]), location[2], location[3])
+                    return Location(int(location[0]), int(location[1]), location[2], location[3], x, y)
         except IndexError:
             return None
 
