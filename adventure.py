@@ -18,10 +18,45 @@ please consult our Course Syllabus.
 This file is Copyright (c) 2024 CSC111 Teaching Team
 """
 
+from python_ta.contracts import check_contracts
+
 # Note: You may add in other import statements here as needed
 from game_data import World, Item, Location, Player
 
+
 # Note: You may add helper functions, classes, etc. here as needed
+def print_location_description(the_location: Location) -> None:
+    """
+    TODO:
+    """
+    if the_location.num > 0:
+        print(the_location.long_description)
+    else:
+        print(the_location.short_description)
+
+
+def prompt_action(the_location: Location, the_map_list: list[list[int]], x: int, y: int) -> str:
+    """
+    # TODO:
+    """
+    print("What do you want to do? \n")
+    print("[menu]")
+    for action in the_location.available_actions(the_map_list, x, y):
+        print(action)
+    the_choice = input("\nEnter action: ")
+    return the_choice
+
+
+def prompt_menu(the_menu: list[str]) -> str:
+    """
+    # TODO:
+    """
+    print("Menu Options: \n")
+    for option in the_menu:
+        print(option)
+    the_choice = input("\nChoose action: ")
+    return the_choice
+
 
 # Note: You may modify the code below as needed; the following starter template are just suggestions
 if __name__ == "__main__":
@@ -37,52 +72,67 @@ if __name__ == "__main__":
         map_list = w.map
         locations_list = w.locations
         items_list = w.items
-
-        location_object = w.get_location(1, 0)
-        print(location_object.short_description)
-
-        location_object.actions = location_object.available_actions(map_list)
-        print(location_object.actions)
-
-        location_object._items = location_object.available_items(items_list)
-        print(location_object._items)
+        #
+        # location_object = w.get_location(1, 0)
+        # print(location_object.location_num)
+        #
+        # location_object.actions = location_object.available_actions(map_list)
+        # print(location_object.actions)
+        #
+        # location_object._items = location_object.available_items(items_list)
+        # print(location_object._items)
 
     p = Player(0, 0, w)  # set starting location of player; you may change the x, y coordinates here as appropriate
-    p.go_south()
-    print(f"{p.x}{p.y}")
-    print(w.map[p.x][p.y])
-    p.go_east()
-    print(f"{p.x}{p.y}")
-    print(w.map[p.x][p.y])
-    p.go_north()
-    print(f"{p.x}{p.y}")
-    print(w.map[p.x][p.y])
-    p.go_west()
-    print(f"{p.x}{p.y}")
-    print(w.map[p.x][p.y])
+    # p.go_south()
+    # print(f"{p.x}{p.y}")
+    # print(w.map[p.x][p.y])
+    # p.go_east()
+    # print(f"{p.x}{p.y}")
+    # print(w.map[p.x][p.y])
+    # p.go_north()
+    # print(f"{p.x}{p.y}")
+    # print(w.map[p.x][p.y])
+    # p.go_west()
+    # print(f"{p.x}{p.y}")
+    # print(w.map[p.x][p.y])
 
-    exit()  # REMOVE THIS LINE for the program to continue executing
+    #exit()  # REMOVE THIS LINE for the program to continue executing
 
-    menu = ["look", "inventory", "score", "quit", "back"]
+    menu = ["look", "inventory", "score", "quit", "resume"]
 
     while not p.victory:
         location = w.get_location(p.x, p.y)
+        location.actions = location.available_actions(map_list, p.x, p.y)
 
         # TODO: ENTER CODE HERE TO PRINT LOCATION DESCRIPTION
         # Depending on whether or not it's been visited before,
         # print either full description (first time visit) or brief description (every subsequent visit)
+        print_location_description(location)
+        locations_list[location.location_num][1] = 0
 
-        print("What to do? \n")
-        print("[menu]")
-        for action in location.available_actions():
-            print(action)
-        choice = input("\nEnter action: ")
+        choice = prompt_action(location, map_list, p.x, p.y)
+        while choice not in location.actions and choice != '[menu]':
+            print("I don't recognize that action. ")
+            choice = prompt_action(location, map_list, p.x, p.y)
+
+        if choice == 'South':
+            p.go_south()
+        elif choice == 'North':
+            p.go_north()
+        elif choice == 'East':
+            p.go_east()
+        elif choice == 'West':
+            p.go_west()
 
         if choice == "[menu]":
-            print("Menu Options: \n")
-            for option in menu:
-                print(option)
-            choice = input("\nChoose action: ")
+            choice = prompt_menu(menu)
+            while choice not in menu:
+                print("I don't recognize that action. ")
+                choice = prompt_menu(menu)
+            if choice == 'look':
+                print(location.long_description)
+            if choice == 'quit':
+                exit()
 
         # TODO: CALL A FUNCTION HERE TO HANDLE WHAT HAPPENS UPON THE PLAYER'S CHOICE
         #  REMEMBER: the location = w.get_location(p.x, p.y) at the top of this loop will update the location if
