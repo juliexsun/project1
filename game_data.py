@@ -368,7 +368,7 @@ class World:
             location_num = location_data.readline().strip()
             if location_num == '':
                 break
-            number1 = location_data.readline().strip  # must change to int to use
+            number1 = location_data.readline().strip()  # must change to int to use
 
             short_description = location_data.readline().strip()
 
