@@ -402,7 +402,6 @@ class World:
             if location_num == -1:
                 return None
             for location in self.locations:
-                print(location)
                 if location[0] == location_num:
                     return Location(location[0], location[1], location[2], location[3], x, y)
         except IndexError:
