@@ -127,13 +127,17 @@ class Player:
     A Player in the text advanture game.
 
     Instance Attributes:
-        - # TODO
+        - x: The x-coordinate of the player's current position in the game world.
+        - y: The y-coordinate of the player's current position in the game world.
+        - inventory: A list that stores items that the player has collected during the game.
+        - victory: Set to be False, and Ture if the player wins.
 
     Representation Invariants:
-        - # TODO
+        - x >= 0
+        - y >= 0
     """
 
-    def __init__(self, x: int, y: int) -> None:
+    def __init__(self, x: int, y: int, world) -> None:
         """
         Initializes a new Player at position (x, y).
         """
@@ -146,6 +150,106 @@ class Player:
         self.y = y
         self.inventory = []
         self.victory = False
+        self.world = world
+
+    # MOVEMENT FUNCTIONS here:
+    def move(self, dx, dy):
+        """
+        The player's movement
+        """
+        new_x = self.x + dx
+        new_y = self.y + dy
+        if self.world.valid_location(new_x, new_y):
+            self.x = new_x
+            self.y = new_y
+        else:
+            print("That way is blocked")
+
+    def go_north(self):
+        """
+        The player chooses to go north by one step
+        """
+        self.move(0, -1)
+
+    def go_south(self):
+        """
+        The player chooses to go south by one step
+        """
+        self.move(0, 1)
+
+    def go_west(self):
+        """
+        The player chooses to go west by one step
+        """
+        self.move(1, 0)
+
+    def go_east(self):
+        """
+        The player chooses to go east by one step
+        """
+        self.move(-1, 0)
+
+    # INVENTORY FUNCTIONS here:
+    def pick_up_item(self, item_name):
+        """
+        Add an item to the player's inventory.
+        """
+        current_location = self.world.get_location(self.x, self.y)
+        item_to_pick_up = None
+
+        for item in current_location.items:
+            if item.name == item_name:
+                item_to_pick_up = item
+                break
+
+        if item_to_pick_up:
+            self.inventory.append(item_to_pick_up)
+            current_location.items.remove(item_to_pick_up)
+            print(f"Picked up {item_name}.")
+        else:
+            print("Item not found in this location.")
+
+    def drop_item(self, item_name):
+        """
+        Drop the specified item from the player's inventory
+        (plus: adding it back to the current location).
+        """
+        item_to_drop = None
+        for item in self.inventory:
+            if item.name == item_name:
+                item_to_drop = item
+                break
+
+        if item_to_drop:
+            # Remove the item from the inventory
+            self.inventory.remove(item_to_drop)
+
+            # Add the item back to the current location
+            current_location = self.world.get_location(self.x, self.y)
+            current_location.items.append(item_to_drop)
+
+            print(f"Dropped {item_name}.")
+        else:
+            print(f"You do not have {item_name} in your inventory.")
+
+    def use_item(self, item_name):
+        """
+        Use the item in the inventory
+        """
+        if item_name in self.inventory:
+            # Implement the logic for using the item
+            print(f"Used {item_name}.")
+        else:
+            print("You don't have this item in your inventory.")
+
+    def view_inventory(self):
+        """
+        Display a list of current items in the inventory.
+        """
+        if self.inventory:
+            print("Inventory:", ", ".join(self.inventory))
+        else:
+            print("Your inventory is empty.")
 
 
 class World:
