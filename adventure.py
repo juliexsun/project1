@@ -18,10 +18,8 @@ please consult our Course Syllabus.
 This file is Copyright (c) 2024 CSC111 Teaching Team
 """
 
-from python_ta.contracts import check_contracts
-
 # Note: You may add in other import statements here as needed
-from game_data import World, Item, Location, Player
+from game_data import Location, Item, Player, World
 
 
 # Note: You may add helper functions, classes, etc. here as needed
@@ -95,27 +93,52 @@ if __name__ == "__main__":
     # p.go_west()
     # print(f"{p.x}{p.y}")
     # print(w.map[p.x][p.y])
-    location = w.get_location(p.x, p.y)
-    location.items = location.available_items(items_list)
+    # location = w.get_location(p.x, p.y)
+    # location.items = location.available_items(items_list)
+    #
+    # print("Items at the starting location:", location.items)
+    # p.pick_up_item('Cheat Sheet', location, items_list)
+    # print(items_list)
+    # location1 = w.get_location(0, 0)
+    # p.go_south()
+    # print(location.location_num)
+    # print("Player's inventory after picking up:", p.inventory)
+    # p.drop_item('Cheat Sheet', location, items_list)
+    # print(items_list)
+    # print(location1.available_items(items_list))
+    # print("Player's inventory after dropping:", p.inventory)
+    # print("Items at this location:", location.items)
 
-    print("Items at the starting location:", location.items)
-    p.pick_up_item('Cheat Sheet')
-    print("Player's inventory after picking up:", p.inventory)
-    p.drop_item('Cheat Sheet')
-
-    #exit()  # REMOVE THIS LINE for the program to continue executing
+    # exit()  # REMOVE THIS LINE for the program to continue executing
 
     menu = ["look", "inventory", "score", "quit", "resume", "pick up item", "drop item"]
 
-    while not p.victory:
+    # while not p.victory:
+    for i in range(1):
         location = w.get_location(p.x, p.y)
         location.actions = location.available_actions(map_list, p.x, p.y)
+        location.items = location.available_items(items_list)
+        #
 
         # TODO: ENTER CODE HERE TO PRINT LOCATION DESCRIPTION
         # Depending on whether or not it's been visited before,
         # print either full description (first time visit) or brief description (every subsequent visit)
-        print_location_description(location)
-        locations_list[location.location_num][1] = 0
+        # print_location_description(location)
+        # locations_list[location.location_num][1] = 0
+        #
+        # print("Items at the starting location:", location.items)
+        # p.pick_up_item('Cheat Sheet', location, items_list)
+        # print(items_list)
+        # location1 = w.get_location(0, 0)
+        # p.go_south()
+        # location = w.get_location(p.x, p.y)
+        # print(location.location_num)
+        # print("Player's inventory after picking up:", p.inventory)
+        # p.drop_item('Cheat Sheet', location, items_list)
+        # print(items_list)
+        # print(location1.available_items(items_list))
+        # print("Player's inventory after dropping:", p.inventory)
+        # print("Items at this location:", location.items)
 
         choice = prompt_action(location, map_list, p.x, p.y)
         while choice not in location.actions and choice != '[menu]':
@@ -130,6 +153,12 @@ if __name__ == "__main__":
             p.go_east()
         elif choice == 'West':
             p.go_west()
+        if choice == 'pick up item':
+            item_name = input("Enter the name of the item to pick up: ")
+            p.pick_up_item(item_name, location, items_list)
+        if choice == 'drop item':
+            item_name = input("Enter the name of the item to drop: ")
+            p.drop_item(item_name, location, items_list)
 
         if choice == "[menu]":
             choice = prompt_menu(menu)
@@ -142,13 +171,6 @@ if __name__ == "__main__":
                 exit()
             if choice == 'inventory':
                 p.view_inventory()
-            if choice == 'pick up item':
-                item_name = input("Enter the name of the item to pick up: ")
-                p.pick_up_item(item_name)
-            if choice == 'drop item':
-                item_name = input("Enter the name of the item to drop: ")
-                p.drop_item(item_name)
-
 
         # TODO: CALL A FUNCTION HERE TO HANDLE WHAT HAPPENS UPON THE PLAYER'S CHOICE
         #  REMEMBER: the location = w.get_location(p.x, p.y) at the top of this loop will update the location if
