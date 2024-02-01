@@ -219,11 +219,10 @@ class Player:
         self.move(0, 1)
 
     # INVENTORY FUNCTIONS here:
-        def pick_up_item(self, item_name: str, location: Location) -> None:
+    def pick_up_item(self, item_name: str, location: Location, items_list: list[list[str]]) -> None:
         """
         Add an item to the player's inventory.
         """
-        # current_location = self.world.get_location(self.x, self.y)
         item_to_pick_up = None
 
         for item in location.items:
@@ -235,10 +234,13 @@ class Player:
             self.inventory.append(item_to_pick_up)
             location.items.remove(item_to_pick_up)
             print(f"Picked up {item_name}.")
+            for item_in_list in items_list:
+                if item_in_list[3] == item_to_pick_up:
+                    item_in_list[0] = '-2'
         else:
             print("Item not found in this location.")
 
-    def drop_item(self, item_name: str) -> None:
+    def drop_item(self, item_name: str, location: Location, items_list: list[list[str]]) -> None:
         """
         Drop the specified item from the player's inventory
         (plus: adding it back to the current location).
@@ -252,12 +254,12 @@ class Player:
         if item_to_drop:
             # Remove the item from the inventory
             self.inventory.remove(item_to_drop)
-
             # Add the item back to the current location
-            current_location = self.world.get_location(self.x, self.y)
-            current_location.items.append(item_to_drop)
-
+            location.items.append(item_to_drop)
             print(f"Dropped {item_name}.")
+            for item_in_list in items_list:
+                if item_in_list[3] == item_to_drop:
+                    item_in_list[0] = str(location.location_num)
         else:
             print(f"You do not have {item_name} in your inventory.")
 
@@ -279,6 +281,7 @@ class Player:
             print("Inventory:", ", ".join(self.inventory))
         else:
             print("Your inventory is empty.")
+
 
 class World:
     """A text adventure game world storing all location, item and map data.
