@@ -95,10 +95,17 @@ if __name__ == "__main__":
     # p.go_west()
     # print(f"{p.x}{p.y}")
     # print(w.map[p.x][p.y])
+    location = w.get_location(p.x, p.y)
+    location.items = location.available_items(items_list)
+
+    print("Items at the starting location:", location.items)
+    p.pick_up_item('Cheat Sheet')
+    print("Player's inventory after picking up:", p.inventory)
+    p.drop_item('Cheat Sheet')
 
     #exit()  # REMOVE THIS LINE for the program to continue executing
 
-    menu = ["look", "inventory", "score", "quit", "resume"]
+    menu = ["look", "inventory", "score", "quit", "resume", "pick up item", "drop item"]
 
     while not p.victory:
         location = w.get_location(p.x, p.y)
@@ -133,6 +140,15 @@ if __name__ == "__main__":
                 print(location.long_description)
             if choice == 'quit':
                 exit()
+            if choice == 'inventory':
+                p.view_inventory()
+            if choice == 'pick up item':
+                item_name = input("Enter the name of the item to pick up: ")
+                p.pick_up_item(item_name)
+            if choice == 'drop item':
+                item_name = input("Enter the name of the item to drop: ")
+                p.drop_item(item_name)
+
 
         # TODO: CALL A FUNCTION HERE TO HANDLE WHAT HAPPENS UPON THE PLAYER'S CHOICE
         #  REMEMBER: the location = w.get_location(p.x, p.y) at the top of this loop will update the location if
