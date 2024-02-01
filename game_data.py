@@ -219,21 +219,21 @@ class Player:
         self.move(0, 1)
 
     # INVENTORY FUNCTIONS here:
-    def pick_up_item(self, item_name: str) -> None:
+        def pick_up_item(self, item_name: str, location: Location) -> None:
         """
         Add an item to the player's inventory.
         """
-        current_location = self.world.get_location(self.x, self.y)
+        # current_location = self.world.get_location(self.x, self.y)
         item_to_pick_up = None
 
-        for item in current_location.items:
-            if item.name == item_name:
+        for item in location.items:
+            if item == item_name:
                 item_to_pick_up = item
                 break
 
         if item_to_pick_up:
             self.inventory.append(item_to_pick_up)
-            current_location.items.remove(item_to_pick_up)
+            location.items.remove(item_to_pick_up)
             print(f"Picked up {item_name}.")
         else:
             print("Item not found in this location.")
@@ -245,7 +245,7 @@ class Player:
         """
         item_to_drop = None
         for item in self.inventory:
-            if item.name == item_name:
+            if item == item_name:
                 item_to_drop = item
                 break
 
@@ -279,7 +279,6 @@ class Player:
             print("Inventory:", ", ".join(self.inventory))
         else:
             print("Your inventory is empty.")
-
 
 class World:
     """A text adventure game world storing all location, item and map data.
