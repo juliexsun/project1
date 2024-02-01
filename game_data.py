@@ -41,8 +41,7 @@ class Location:
     num: int
     short_description: str
     long_description: str
-    _items: list[str]
-    actions: list[str]
+    items: list[str]
 
     # does not initialize _items when using get_locations() from World class
     # must initialize separately
@@ -55,6 +54,7 @@ class Location:
         self.num = num
         self.long_description = long_description
         self.short_description = short_description
+        self.items = []
         # if items_list is not None:
         #     self._items = self.available_items(items_list)
         # if map_list is not None:
@@ -142,8 +142,8 @@ class Item:
         # All item objects in your game MUST be represented as an instance of this class.
 
         self.name = name
-        self.start_position = start
-        self.target_position = target
+        self.start = start
+        self.target = target
         self.target_points = target_points
 
 
@@ -163,6 +163,7 @@ class Player:
     """
     x: int
     y: int
+    victory: bool
     # world: ANY???? WORLD???
 
     def __init__(self, x: int, y: int, world) -> None:
@@ -181,7 +182,7 @@ class Player:
         self.world = world
 
     # MOVEMENT FUNCTIONS here:
-    def move(self, dx, dy):
+    def move(self, dx: int, dy: int) -> None:
         """
         The player's movement
         """
@@ -193,32 +194,32 @@ class Player:
         else:
             print("That way is blocked")
 
-    def go_north(self):
+    def go_north(self) -> None:
         """
         The player chooses to go north by one step
         """
         self.move(-1, 0)
 
-    def go_south(self):
+    def go_south(self) -> None:
         """
         The player chooses to go south by one step
         """
         self.move(1, 0)
 
-    def go_west(self):
+    def go_west(self) -> None:
         """
         The player chooses to go west by one step
         """
         self.move(0, -1)
 
-    def go_east(self):
+    def go_east(self) -> None:
         """
         The player chooses to go east by one step
         """
         self.move(0, 1)
 
     # INVENTORY FUNCTIONS here:
-    def pick_up_item(self, item_name):
+    def pick_up_item(self, item_name: str) -> None:
         """
         Add an item to the player's inventory.
         """
@@ -237,7 +238,7 @@ class Player:
         else:
             print("Item not found in this location.")
 
-    def drop_item(self, item_name):
+    def drop_item(self, item_name: str) -> None:
         """
         Drop the specified item from the player's inventory
         (plus: adding it back to the current location).
@@ -260,7 +261,7 @@ class Player:
         else:
             print(f"You do not have {item_name} in your inventory.")
 
-    def use_item(self, item_name):
+    def use_item(self, item_name: str) -> None:
         """
         Use the item in the inventory
         """
@@ -270,7 +271,7 @@ class Player:
         else:
             print("You don't have this item in your inventory.")
 
-    def view_inventory(self):
+    def view_inventory(self) -> None:
         """
         Display a list of current items in the inventory.
         """
@@ -344,7 +345,7 @@ class World:
         return the_map
 
     # TODO: Add methods for loading location data and item data (see note above).
-    def load_locations(self, location_data) -> list[list[int | str]]:
+    def load_locations(self, location_data: TextIO) -> list[list[int | str]]:
         """
         WRITE THE DOCSTRING BUT LIKE IT PUTS THE LOCATIONS INTO A NESTED LIST
         AND WE CAN ACCESS SPECIFIC ATRRIBUTES WITH SPECIFIC INDEXES RAHHHHHH
@@ -371,7 +372,7 @@ class World:
             location_data.readline()
         return locations
 
-    def load_items(self, items_data) -> list[list[str]]:
+    def load_items(self, items_data: TextIO) -> list[list[str]]:
         """
         WRITE DOCSTRING. CHANGES ITEMS.TXT INTO NESTED LIST
         """
