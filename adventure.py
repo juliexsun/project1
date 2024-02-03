@@ -33,13 +33,15 @@ def print_location_description(the_location: Location) -> None:
         print(the_location.short_description)
 
 
-def prompt_action(the_location: Location, the_map_list: list[list[int]], x: int, y: int) -> str:
+def prompt_action(the_location: Location, the_map_list: list[list[int]], x: int, y: int, items_lst: list[Item]) -> str:
     """
-    # TODO:
+    # TODO: CHANGE THE VAR NAMES
     """
     print("What do you want to do? \n")
-    print("[menu]")
-    for action in the_location.available_actions(the_map_list, x, y):
+    print("menu")
+    for action in the_location.available_directions(the_map_list, x, y):
+        print(action)
+    for action in the_location.available_actions(items_lst):
         print(action)
     the_choice = input("\nEnter action: ")
     return the_choice
@@ -65,22 +67,24 @@ if __name__ == "__main__":
     with open('map.txt') as map_file, open('locations.txt') as location_file, open('items.txt') as item_file:
         w = World(map_file, location_file, item_file)
         # print(w.map)
-        # print(w.locations)
-        # print(w.items)
+        # for item in w.items:
+        #     print(item.start, item.target, item.target_points, item.name)
         map_list = w.map
         locations_list = w.locations
         items_list = w.items
-        #
-        # location_object = w.get_location(1, 0)
-        # print(location_object.location_num)
-        #
-        # location_object.actions = location_object.available_actions(map_list)
-        # print(location_object.actions)
-        #
-        # location_object._items = location_object.available_items(items_list)
-        # print(location_object._items)
+
+        location_object = w.get_location(0, 0)
+        # print(location_object.location_num, location_object.num)
+        # print(location_object.short_description)
+        # print(location_object.long_description)
+
+        location_object.items = location_object.available_items(items_list)
+        for item in location_object.items:
+            print(item.start, item.target, item.target_points, item.name)
+
 
     p = Player(0, 0, w)  # set starting location of player; you may change the x, y coordinates here as appropriate
+    p.pick_up_item("Cheat Sheet", location_object, items_list)
     # p.go_south()
     # print(f"{p.x}{p.y}")
     # print(w.map[p.x][p.y])
@@ -109,22 +113,22 @@ if __name__ == "__main__":
     # print("Player's inventory after dropping:", p.inventory)
     # print("Items at this location:", location.items)
 
-    # exit()  # REMOVE THIS LINE for the program to continue executing
+    exit()  # REMOVE THIS LINE for the program to continue executing
 
-    menu = ["look", "inventory", "score", "quit", "resume", "pick up item", "drop item"]
+    menu = ["look", "inventory", "score", "quit", "resume"]
 
-    # while not p.victory:
-    for i in range(1):
+    while not p.victory:
         location = w.get_location(p.x, p.y)
-        location.actions = location.available_actions(map_list, p.x, p.y)
+        location.actions = location.available_directions(map_list, p.x, p.y) + location.available_actions(items_list)
         location.items = location.available_items(items_list)
-        #
+
+        print(location.actions)
 
         # TODO: ENTER CODE HERE TO PRINT LOCATION DESCRIPTION
         # Depending on whether or not it's been visited before,
         # print either full description (first time visit) or brief description (every subsequent visit)
-        # print_location_description(location)
-        # locations_list[location.location_num][1] = 0
+        print_location_description(location)
+        locations_list[location.location_num].num = 0
         #
         # print("Items at the starting location:", location.items)
         # p.pick_up_item('Cheat Sheet', location, items_list)
@@ -140,36 +144,37 @@ if __name__ == "__main__":
         # print("Player's inventory after dropping:", p.inventory)
         # print("Items at this location:", location.items)
 
-        choice = prompt_action(location, map_list, p.x, p.y)
-        while choice not in location.actions and choice != '[menu]':
-            print("I don't recognize that action. ")
-            choice = prompt_action(location, map_list, p.x, p.y)
+        choice = prompt_action(location, map_list, p.x, p.y, items_list)
+        while choice.lower() not in location.actions and choice != 'menu':
+            print("You can't do that. Check your spelling... or maybe your logic?")
+            choice = prompt_action(location, map_list, p.x, p.y, items_list)
 
-        if choice == 'South':
+        if choice.lower() == 'go south':
             p.go_south()
-        elif choice == 'North':
+        elif choice.lower() == 'go north':
             p.go_north()
-        elif choice == 'East':
+        elif choice.lower() == 'go east':
             p.go_east()
-        elif choice == 'West':
+        elif choice.lower() == 'go west':
             p.go_west()
-        if choice == 'pick up item':
+        if choice.lower() == 'pick up item':
             item_name = input("Enter the name of the item to pick up: ")
             p.pick_up_item(item_name, location, items_list)
-        if choice == 'drop item':
+        if choice.lower() == 'drop item':
             item_name = input("Enter the name of the item to drop: ")
+            location = w.get_location(p.x, p.y)
             p.drop_item(item_name, location, items_list)
 
-        if choice == "[menu]":
+        if choice.lower() == "menu":
             choice = prompt_menu(menu)
-            while choice not in menu:
-                print("I don't recognize that action. ")
+            while choice.lower() not in menu:
+                print("You can't do that. Check your spelling... or maybe your logic?")
                 choice = prompt_menu(menu)
-            if choice == 'look':
+            if choice.lower() == 'look':
                 print(location.long_description)
-            if choice == 'quit':
+            if choice.lower() == 'quit':
                 exit()
-            if choice == 'inventory':
+            if choice.lower() == 'inventory':
                 p.view_inventory()
 
         # TODO: CALL A FUNCTION HERE TO HANDLE WHAT HAPPENS UPON THE PLAYER'S CHOICE
