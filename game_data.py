@@ -432,7 +432,9 @@ class Player:
         Display a list of current items in the inventory.
         """
         if self.inventory:
-            print("Inventory:", ", ".join(self.inventory))
+            inventory_names = [item.name for item in self.inventory]
+            print("Inventory:", ", ".join(inventory_names))
+
         else:
             print("Your inventory is empty.")
 
