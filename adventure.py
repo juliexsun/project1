@@ -27,7 +27,7 @@ def print_location_description(the_location: Location) -> None:
     """
     TODO:
     """
-    if the_location.num > 0:
+    if the_location.available_score > 0:
         print(the_location.long_description)
     else:
         print(the_location.short_description)
@@ -143,7 +143,6 @@ if __name__ == "__main__":
         # print either full description (first time visit) or brief description (every subsequent visit)
         print_location_description(location)
         locations_list[location.location_num].available_score = 0
-        #
         # print("Items at the starting location:", location.items)
         # p.pick_up_item('Cheat Sheet', location, items_list)
         # print(items_list)
@@ -178,10 +177,12 @@ if __name__ == "__main__":
         if choice.lower() == 'pick up item':
             item_name = input("Enter the name of the item to pick up: ")
             p.pick_up_item(item_name, location, items_list)
+            current_moves += 1
         if choice.lower() == 'drop item':
             item_name = input("Enter the name of the item to drop: ")
             location = w.get_location(p.x, p.y)
             p.drop_item(item_name, location, items_list)
+            current_moves += 1
         if choice.lower() == "menu":
             choice = prompt_menu(menu)
             while choice.lower() not in menu:
