@@ -84,13 +84,13 @@ class Location:
 
     # does not initialize _items when using get_locations() from World class
     # must initialize separately
-    def __init__(self, location_num: int, num: int, short_description: str, long_description: str) -> None:
+    def __init__(self, location_num: int, available_score: int, short_description: str, long_description: str) -> None:
         """Initialize a new location.
 
         # TODO Add more details here about the initialization if needed
         """
         self.location_num = location_num
-        self.num = num
+        self.available_score = available_score
         self.long_description = long_description
         self.short_description = short_description
         self.items = []
@@ -318,7 +318,8 @@ class Player:
     x: int
     y: int
     victory: bool
-    # world: ANY???? WORLD???
+    inventory = list
+    world: World
 
     def __init__(self, x: int, y: int, world) -> None:
         """
@@ -334,6 +335,7 @@ class Player:
         self.inventory = []
         self.victory = False
         self.world = world
+        self.inventory_size = 2
 
     # MOVEMENT FUNCTIONS here:
     def move(self, dx: int, dy: int) -> None:
@@ -385,12 +387,18 @@ class Player:
                 break
 
         if item_to_pick_up:
-            self.inventory.append(item_to_pick_up)
-            location.items.remove(item_to_pick_up)
-            print(f"Picked up {item_name}.")
-            for item_in_list in items_list:
-                if item_in_list.name == item_to_pick_up:
-                    item_in_list.start = '-2'
+            if item_name == "bag":
+                self.inventory_size = 3
+                print(" WOW You found DORA's bag! Now your inventory size increase to 3 :)")
+            if len(self.inventory) <= self.inventory_size:
+                self.inventory.append(item_to_pick_up)
+                location.items.remove(item_to_pick_up)
+                print(f"Picked up {item_name}.")
+                for item_in_list in items_list:
+                    if item_in_list.name == item_to_pick_up:
+                        item_in_list.start = '-2'
+            else:
+                print("Sorry, your bag is full :( You can't pick up ", item_name)
         else:
             print("Item not found in this location.")
 
@@ -401,7 +409,7 @@ class Player:
         """
         item_to_drop = None
         for item in self.inventory:
-            if item == item_name:
+            if item.name == item_name:
                 item_to_drop = item
                 break
 
