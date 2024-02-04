@@ -82,9 +82,11 @@ if __name__ == "__main__":
         for item in location_object.items:
             print(item.start, item.target, item.target_points, item.name)
 
-
     p = Player(0, 0, w)  # set starting location of player; you may change the x, y coordinates here as appropriate
-    p.pick_up_item("Cheat Sheet", location_object, items_list)
+    # p.pick_up_item("Cheat Sheet", location_object, items_list)
+    # p.view_inventory()
+    # p.drop_item("Cheat Sheet", location_object, items_list)
+    # p.view_inventory()
     # p.go_south()
     # print(f"{p.x}{p.y}")
     # print(w.map[p.x][p.y])
@@ -99,36 +101,48 @@ if __name__ == "__main__":
     # print(w.map[p.x][p.y])
     # location = w.get_location(p.x, p.y)
     # location.items = location.available_items(items_list)
-    #
-    # print("Items at the starting location:", location.items)
+    # location_items = [item.name for item in location.items]
+    # print("Items at the starting location:", location_items)
     # p.pick_up_item('Cheat Sheet', location, items_list)
-    # print(items_list)
+    # print(location_items)
     # location1 = w.get_location(0, 0)
     # p.go_south()
     # print(location.location_num)
     # print("Player's inventory after picking up:", p.inventory)
     # p.drop_item('Cheat Sheet', location, items_list)
-    # print(items_list)
+    # print(location_items)
     # print(location1.available_items(items_list))
     # print("Player's inventory after dropping:", p.inventory)
-    # print("Items at this location:", location.items)
-
-    exit()  # REMOVE THIS LINE for the program to continue executing
+    # print("Items at this location:", location_items)
+    #
+    # exit()  # REMOVE THIS LINE for the program to continue executing
 
     menu = ["look", "inventory", "score", "quit", "resume"]
+    max_moves = 3
+    current_moves = 0
+    score = 0
 
     while not p.victory:
         location = w.get_location(p.x, p.y)
         location.actions = location.available_directions(map_list, p.x, p.y) + location.available_actions(items_list)
         location.items = location.available_items(items_list)
+        score += locations_list[location.location_num].available_score
+
+        if current_moves == max_moves:
+            print("!Warning: You have only one move left!")
+        if current_moves > max_moves:
+            print("The maximum number of moves is reached. You missed your exam! Try again :)")
+            exit()
 
         print(location.actions)
+        print("moves: ", current_moves, "/", max_moves)
+        print("score:", score)
 
         # TODO: ENTER CODE HERE TO PRINT LOCATION DESCRIPTION
         # Depending on whether or not it's been visited before,
         # print either full description (first time visit) or brief description (every subsequent visit)
         print_location_description(location)
-        locations_list[location.location_num].num = 0
+        locations_list[location.location_num].available_score = 0
         #
         # print("Items at the starting location:", location.items)
         # p.pick_up_item('Cheat Sheet', location, items_list)
@@ -151,12 +165,16 @@ if __name__ == "__main__":
 
         if choice.lower() == 'go south':
             p.go_south()
+            current_moves += 1
         elif choice.lower() == 'go north':
             p.go_north()
+            current_moves += 1
         elif choice.lower() == 'go east':
             p.go_east()
+            current_moves += 1
         elif choice.lower() == 'go west':
             p.go_west()
+            current_moves += 1
         if choice.lower() == 'pick up item':
             item_name = input("Enter the name of the item to pick up: ")
             p.pick_up_item(item_name, location, items_list)
@@ -164,7 +182,6 @@ if __name__ == "__main__":
             item_name = input("Enter the name of the item to drop: ")
             location = w.get_location(p.x, p.y)
             p.drop_item(item_name, location, items_list)
-
         if choice.lower() == "menu":
             choice = prompt_menu(menu)
             while choice.lower() not in menu:
