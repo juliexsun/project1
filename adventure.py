@@ -84,9 +84,9 @@ if __name__ == "__main__":
         # print(location_object.short_description)
         # print(location_object.long_description)
 
-        location_object.items = location_object.available_items(items_list)
-        for item in location_object.items:
-            print(item.start, item.target, item.target_points, item.name)
+        # location_object.items = location_object.available_items(items_list)
+        # for item in location_object.items:
+        #     print(item.start, item.target, item.target_points, item.name)
 
     p = Player(0, 0, w)  # set starting location of player; you may change the x, y coordinates here as appropriate
     # p.pick_up_item("Cheat Sheet", location_object, items_list)
@@ -122,27 +122,28 @@ if __name__ == "__main__":
     # print("Items at this location:", location_items)
     #
     # exit()  # REMOVE THIS LINE for the program to continue executing
-
     menu = ["look", "inventory", "score", "quit", "resume"]
-    max_moves = 3
+    max_moves = 10
     current_moves = 0
     score = 0
 
     while not p.victory:
+
         location = w.get_location(p.x, p.y)
-        location.actions = location.available_directions(map_list, p.x, p.y) + location.available_actions(items_list)
+        location_available_actions = location.available_actions(items_list, p.inventory)
+        location_available_directions = location.available_directions(map_list, p.x, p.y)
+        location.actions = location_available_actions + location_available_directions
         location.items = location.available_items(items_list)
         score += locations_list[location.location_num].available_score
 
-        if current_moves == max_moves:
+        if current_moves == max_moves - 1:
             print("!Warning: You have only one move left!")
         if current_moves > max_moves:
             print("The maximum number of moves is reached. You missed your exam! Try again :)")
             exit()
 
-        print(location.actions)
         print("moves: ", current_moves, "/", max_moves)
-        print("score:", score)
+
 
         # TODO: ENTER CODE HERE TO PRINT LOCATION DESCRIPTION
         # Depending on whether or not it's been visited before,
@@ -162,7 +163,6 @@ if __name__ == "__main__":
         # print(location1.available_items(items_list))
         # print("Player's inventory after dropping:", p.inventory)
         # print("Items at this location:", location.items)
-
         prompt_direction(location, map_list, p.x, p.y)
         choice = prompt_action(location, items_list, p.inventory)
         while choice.lower() not in location.actions and choice != 'menu':
@@ -184,13 +184,16 @@ if __name__ == "__main__":
             current_moves += 1
         if choice.lower() == 'pick up item':
             item_name = input("Enter the name of the item to pick up: ")
-            p.pick_up_item(item_name, location, items_list)
-            current_moves += 1
+            if p.pick_up_item(item_name, location, items_list):
+                for item in p.inventory:
+                    score += int(item.target_points)
+                    item.target_points = "0"
+                current_moves += 1
         if choice.lower() == 'drop item':
             item_name = input("Enter the name of the item to drop: ")
             location = w.get_location(p.x, p.y)
-            p.drop_item(item_name, location, items_list)
-            current_moves += 1
+            if p.drop_item(item_name, location, items_list):
+                current_moves += 1
         if choice.lower() == "menu":
             choice = prompt_menu(menu)
             while choice.lower() not in menu:
@@ -202,13 +205,19 @@ if __name__ == "__main__":
                 exit()
             if choice.lower() == 'inventory':
                 p.view_inventory()
-        # TODO: CALL A FUNCTION HERE TO HANDLE WHAT HAPPENS UPON THE PLAYER'S CHOICE
-        #  REMEMBER: the location = w.get_location(p.x, p.y) at the top of this loop will update the location if
-        #  the choice the player made was just a movement, so only updating player's position is enough to change the
-        #  location to the next appropriate location
-        #  Possibilities:
-        #  A helper function such as do_action(w, p, location, choice)
-        #  OR A method in World class w.do_action(p, location, choice)
-        #  OR Check what type of action it is, then modify only player or location accordingly
-        #  OR Method in Player class for move or updating inventory
-        #  OR Method in Location class for updating location item info, or other location data etc....
+            if choice.lower() == 'score':
+                print("score:", score)
+
+        location = w.get_location(p.x, p.y)
+        p.player_victory(location, items_list)
+
+    # TODO: CALL A FUNCTION HERE TO HANDLE WHAT HAPPENS UPON THE PLAYER'S CHOICE
+    #  REMEMBER: the location = w.get_location(p.x, p.y) at the top of this loop will update the location if
+    #  the choice the player made was just a movement, so only updating player's position is enough to change the
+    #  location to the next appropriate location
+    #  Possibilities:
+    #  A helper function such as do_action(w, p, location, choice)
+    #  OR A method in World class w.do_action(p, location, choice)
+    #  OR Check what type of action it is, then modify only player or location accordingly
+    #  OR Method in Player class for move or updating inventory
+    #  OR Method in Location class for updating location item info, or other location data etc....
