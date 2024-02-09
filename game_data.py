@@ -425,13 +425,15 @@ class Player:
         else:
             print(f"You do not have {item_name} in your inventory.")
 
-    def use_item(self, item_name: str) -> None:
+    def use_item(self, item_name: str, the_map: Map, map_list: list[list[int]]) -> None:
         """
         Use the item in the inventory
         """
         if item_name in self.inventory:
             # Implement the logic for using the item
             print(f"Used {item_name}.")
+            if item_name == 'map':
+                the_map.print_map(map_list)
         else:
             print("You don't have this item in your inventory.")
 
