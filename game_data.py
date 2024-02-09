@@ -325,8 +325,9 @@ class Player:
     x: int
     y: int
     victory: bool
-    inventory = list
+    inventory: list
     world: World
+    inventory_size: int
 
     def __init__(self, x: int, y: int, world) -> None:
         """
@@ -382,7 +383,7 @@ class Player:
         self.move(0, 1)
 
     # INVENTORY FUNCTIONS here:
-    def pick_up_item(self, item_name: str, location: Location, items_list: list[Item]) -> None:
+    def pick_up_item(self, item_name: str, location: Location, items_list: list[Item]) -> bool:
         """
         Add an item to the player's inventory.
         """
@@ -404,12 +405,15 @@ class Player:
                 for item_in_list in items_list:
                     if item_in_list.name == item_to_pick_up:
                         item_in_list.start = '-2'
+
+                return True
             else:
                 print("Sorry, your bag is full :( You can't pick up ", item_name)
         else:
             print("Item not found in this location.")
+        return False
 
-    def drop_item(self, item_name: str, location: Location, items_list: list[Item]) -> None:
+    def drop_item(self, item_name: str, location: Location, items_list: list[Item]) -> bool:
         """
         Drop the specified item from the player's inventory
         (plus: adding it back to the current location).
@@ -429,18 +433,18 @@ class Player:
             for item_in_list in items_list:
                 if item_in_list.name == item_to_drop:
                     item_in_list.start = location.location_num
+            return True
         else:
             print(f"You do not have {item_name} in your inventory.")
+            return False
 
-    def use_item(self, item_name: str, the_map: Map, map_list: list[list[int]]) -> None:
+    def use_item(self, item_name: str) -> None:
         """
         Use the item in the inventory
         """
-        if item_name in [item.name for item in self.inventory]:
+        if item_name in self.inventory:
             # Implement the logic for using the item
             print(f"Used {item_name}.")
-            if item_name == 'map':
-                the_map.print_map(map_list)
         else:
             print("You don't have this item in your inventory.")
 
@@ -455,6 +459,18 @@ class Player:
         else:
             print("Your inventory is empty.")
 
+    def player_victory(self, location: Location, items_list: list[Item]) -> None:
+        """
+        Player achieve victory with specific condition.
+        """
+        item_now = []
+        for item in location.items:
+            item_now.append(item.name)
+
+        # TODO: Change the following code later
+        if location.location_num == 2 and item_now == ['Cheat Sheet']:
+            self.victory = True
+            print("Congratulations! You passed the exam!")
 
 if __name__ == '__main__':
     import doctest
