@@ -33,15 +33,21 @@ def print_location_description(the_location: Location) -> None:
         print(the_location.short_description)
 
 
-def prompt_action(the_location: Location, the_map_list: list[list[int]], x: int, y: int, items_lst: list[Item]) -> str:
+def prompt_direction(the_location: Location, the_map_list: list[list[int]], x: int, y: int) -> None:
     """
-    # TODO: CHANGE THE VAR NAMES
+    asdlfja;lsdkfj
     """
     print("What do you want to do? \n")
     print("menu")
-    for action in the_location.available_directions(the_map_list, x, y):
-        print(action)
-    for action in the_location.available_actions(items_lst):
+    for direction in the_location.available_directions(the_map_list, x, y):
+        print(direction)
+
+
+def prompt_action(the_location: Location, items_lst: list[Item], inventory: list[Item]) -> str:
+    """
+    adslfkjsdl;kfj
+    """
+    for action in the_location.available_actions(items_lst, inventory):
         print(action)
     the_choice = input("\nEnter action: ")
     return the_choice
@@ -157,10 +163,12 @@ if __name__ == "__main__":
         # print("Player's inventory after dropping:", p.inventory)
         # print("Items at this location:", location.items)
 
-        choice = prompt_action(location, map_list, p.x, p.y, items_list)
+        prompt_direction(location, map_list, p.x, p.y)
+        choice = prompt_action(location, items_list, p.inventory)
         while choice.lower() not in location.actions and choice != 'menu':
             print("You can't do that. Check your spelling... or maybe your logic?")
-            choice = prompt_action(location, map_list, p.x, p.y, items_list)
+            prompt_direction(location, map_list, p.x, p.y)
+            choice = prompt_action(location, items_list, p.inventory)
 
         if choice.lower() == 'go south':
             p.go_south()
@@ -194,7 +202,6 @@ if __name__ == "__main__":
                 exit()
             if choice.lower() == 'inventory':
                 p.view_inventory()
-
         # TODO: CALL A FUNCTION HERE TO HANDLE WHAT HAPPENS UPON THE PLAYER'S CHOICE
         #  REMEMBER: the location = w.get_location(p.x, p.y) at the top of this loop will update the location if
         #  the choice the player made was just a movement, so only updating player's position is enough to change the
