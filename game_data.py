@@ -153,13 +153,20 @@ class Location:
             directions.append('go west')
         return directions
 
-    def available_actions(self, items_list) -> list[str]:
+    def available_actions(self, items_list: list[Item], inventory: list[Item]) -> list[str]:
         """
         pick up, read, that type of thing
+        # TODO: TEST THIS
         """
         actions = []
         if len(self.available_items(items_list)) > 0:
             actions.append('pick up item')
+        if len(inventory) > 0:
+            actions.append('drop item')
+        for item in inventory:
+            if item.name in ['map', 't-card', 'cheat sheet', 'lucky pen']:
+                actions.append('use item')
+                break
         return actions
 
 
