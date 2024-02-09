@@ -436,7 +436,7 @@ class Player:
         """
         Use the item in the inventory
         """
-        if item_name in self.inventory:
+        if item_name in [item.name for item in self.inventory]:
             # Implement the logic for using the item
             print(f"Used {item_name}.")
             if item_name == 'map':
