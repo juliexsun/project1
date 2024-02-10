@@ -86,6 +86,8 @@ if __name__ == "__main__":
     current_moves = 0
     score = 0
     previous_location = '-1-1'
+    print("You have a CSC111 test today. Find Cheat Sheet, T-Card, Lucky Pen on campus")
+    print("and bring them with you to location 20, Exam Centre to take the exam.")
 
     while not p.victory:
         location = w.get_location(p.x, p.y)
