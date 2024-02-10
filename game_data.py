@@ -442,6 +442,14 @@ class Player:
         """
         self.move(0, 1)
 
+    def remove_from_location(self, item_to_pick_up: Item, items_list: list[Item]) -> None:
+        """
+        Remove picked up item from its location
+        """
+        for item_in_list in items_list:
+            if item_in_list.name == item_to_pick_up.name:
+                item_in_list.start = -2
+
     # INVENTORY FUNCTIONS here:
     def pick_up_item(self, item_name: str, location: Location, items_list: list[Item]) -> bool:
         """
@@ -457,14 +465,16 @@ class Player:
         if item_to_pick_up:
             if item_name == "Bag":
                 self.inventory_size = 3
+                location.items.remove(item_to_pick_up)
+                print(f"Picked up {item_name}.")
                 print("WOW You found DORA's bag! Now your inventory size increase to 3 :)")
+                self.remove_from_location(item_to_pick_up, items_list)
+                return True
             elif len(self.inventory) <= self.inventory_size:
                 self.inventory.append(item_to_pick_up)
                 location.items.remove(item_to_pick_up)
                 print(f"Picked up {item_name}.")
-                for item_in_list in items_list:
-                    if item_in_list.name == item_to_pick_up.name:
-                        item_in_list.start = -2
+                self.remove_from_location(item_to_pick_up, items_list)
                 return True
             else:
                 print("Sorry, your bag is full :( You can't pick up ", item_name)
