@@ -380,9 +380,6 @@ class Player:
         - y: The y-coordinate of the player's current position in the game world.
         - inventory: A list that stores items that the player has collected during the game.
         - victory: Set to be False, and Ture if the player wins.
-        - world: World object
-        - inventory_size: the size of the player's inventory
-
 
     Representation Invariants:
         - x >= 0
