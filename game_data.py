@@ -56,7 +56,6 @@ class Item:
     def read_book(self, book_name: str) -> None:
         """#TODO: fuck man. pycharm told me to
         """
-        pass
 
 
 class Map(Item):
@@ -78,7 +77,7 @@ class Map(Item):
         """
         print the map lol
         """
-        print("□ are blocked spaces.")
+        print("□ represents a blocked space.\n")
         for row in map_list:
             for item in row:
                 if item == -1:
@@ -113,7 +112,7 @@ class Book(Item):
             print("surprise. UGH! What location number! Where! There may be another clue or a map somewhere...")
         elif book_name == "How to Determine The Best Number":
             print("Wow, this book only has one page, one sentence. It reads, \"The best number is 5.\"")
-        elif book_name == "How to Pull All Nighters Gaming" or book_name == "How to Procrastinate":
+        elif book_name in {'How to Pull All Nighters Gaming', 'How to Procrastinate'}:
             print("Uh-oh. You feel not-so-knowledgeable. Your score seems to be getting lower.")
             print("Maybe pick more helpful books to read.")
         elif book_name == "How to Make a TA Love You":
@@ -236,12 +235,13 @@ class World:
 
     Instance Attributes:
         - map: a nested list representation of this world's map
-        - # TODO add more instance attributes as needed; do NOT remove the map attribute
         - locations: a nested list representation of the locations in the world
         - items: a nested list representation of the items in the world
 
     Representation Invariants:
-        - # TODO
+        - len(map) > 0
+        - len(locations) > 0
+        - len(items) > 0
     """
     map: list[list[int]]
     locations: list[Location]
@@ -286,7 +286,6 @@ class World:
 
         Return this list representation of the map.
         """
-        # TODO: Complete this method as specified. Do not modify any of this function's specifications.
         the_map = []
         file = map_data.readlines()
         for line in file:
@@ -325,7 +324,7 @@ class World:
 
     def load_items(self, items_data: TextIO) -> list[Item]:
         """
-        Store locations from open file location_data as the locations attribute of this object
+        Store items from open file location_data as the items attribute of the Items class 
         """
         items = []
         file = items_data.readlines()
@@ -459,7 +458,7 @@ class Player:
             if item_name == "Bag":
                 self.inventory_size = 3
                 print("WOW You found DORA's bag! Now your inventory size increase to 3 :)")
-            if len(self.inventory) <= self.inventory_size:
+            elif len(self.inventory) <= self.inventory_size:
                 self.inventory.append(item_to_pick_up)
                 location.items.remove(item_to_pick_up)
                 print(f"Picked up {item_name}.")
@@ -493,23 +492,24 @@ class Player:
             for item_in_list in items_list:
                 if item_in_list.name == item_to_drop.name:
                     item_in_list.start = location.location_num
+                    break
             return True
         else:
             print(f"You do not have {item_name} in your inventory.")
             return False
 
-    def use_item(self, item_name: str, the_map: Map, map_list: list[list[int]]) -> None:
-        """
-        Use the item in the inventory
-        # TODO: MAYBE DONT NEED
-        """
-        if item_name in [item.name for item in self.inventory]:
-            # Implement the logic for using the item
-            print(f"Used {item_name}.")
-            if item_name == 'Map':
-                the_map.print_map(map_list)
-        else:
-            print("You don't have this item in your inventory.")
+    # def use_item(self, item_name: str, the_map: Map, map_list: list[list[int]]) -> None:
+    #     """
+    #     Use the item in the inventory
+    #     # TODO: MAYBE DONT NEED
+    #     """
+    #     if item_name in [item.name for item in self.inventory]:
+    #         # Implement the logic for using the item
+    #         print(f"Used {item_name}.")
+    #         if item_name == 'Map':
+    #             the_map.print_map(map_list)
+    #     else:
+    #         print("You don't have this item in your inventory.")
 
     def view_inventory(self) -> None:
         """
@@ -530,10 +530,10 @@ class Player:
 
         # TODO: Change to all 3 items and reasonable score and correct location
         correct_items = {item.name for item in location.items if location.location_num == item.target}
-        if correct_items == {'Cheat Sheet'}:
+        if correct_items == {'Cheat Sheet', 'T-Card', 'Lucky Pen'}:
             if score >= 1:
                 self.victory = True
-                print("Congratulations! You passed the exam!")
+                print("Congratulations! You scored great on the exam!")
             else:
                 print("You successfully took the exam, but you failed :(")
                 print("Next time, try exploring the campus more and look for items that will")
