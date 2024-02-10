@@ -81,7 +81,7 @@ if __name__ == "__main__":
 
     p = Player(0, 0, w)  # set starting location of player; you may change the x, y coordinates here as appropriate
     menu = ["look", "inventory", "score", "quit", "resume"]
-    max_moves = 10
+    max_moves = 45
     current_moves = 0
     score = 0
     previous_location = '-1-1'
@@ -152,12 +152,15 @@ if __name__ == "__main__":
                 if item.name == 'Map':
                     item.print_map(map_list)
                     current_moves += 1
+                    break
         if 'read "How to' in choice:
             for item in items_list:
                 if item.name == choice[5:]:
                     item.read_book(choice[5:])
                     score += item.target_points
                     item.target_points = 0
+                    current_moves += 1
+                    break
         if choice.lower() == "menu":
             choice = prompt_menu(menu)
             while choice.lower() not in menu:
@@ -181,12 +184,12 @@ if __name__ == "__main__":
             exit()
 
     # TODO: CALL A FUNCTION HERE TO HANDLE WHAT HAPPENS UPON THE PLAYER'S CHOICE
-        #  REMEMBER: the location = w.get_location(p.x, p.y) at the top of this loop will update the location if
-        #  the choice the player made was just a movement, so only updating player's position is enough to change the
-        #  location to the next appropriate location
-        #  Possibilities:
-        #  A helper function such as do_action(w, p, location, choice)
-        #  OR A method in World class w.do_action(p, location, choice)
-        #  OR Check what type of action it is, then modify only player or location accordingly
-        #  OR Method in Player class for move or updating inventory
-        #  OR Method in Location class for updating location item info, or other location data etc....
+    #  REMEMBER: the location = w.get_location(p.x, p.y) at the top of this loop will update the location if
+    #  the choice the player made was just a movement, so only updating player's position is enough to change the
+    #  location to the next appropriate location
+    #  Possibilities:
+    #  A helper function such as do_action(w, p, location, choice)
+    #  OR A method in World class w.do_action(p, location, choice)
+    #  OR Check what type of action it is, then modify only player or location accordingly
+    #  OR Method in Player class for move or updating inventory
+    #  OR Method in Location class for updating location item info, or other location data etc....
