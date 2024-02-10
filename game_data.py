@@ -22,7 +22,7 @@ from typing import Optional, TextIO
 
 
 class Item:
-    """An item in our text adventure game world.
+    """A general item in our text adventure game world.
 
     Instance Attributes:
         - # TODO
@@ -53,10 +53,71 @@ class Item:
         self.target_points = target_points
         self.name = name
 
+    def read_book(self, book_name: str) -> None:
+        """#TODO: fuck man. pycharm told me to
+        """
+        pass
 
-# class Map(Item):
 
-# class Book(Item):
+class Map(Item):
+    """
+    MAP MAP MAP MAP
+    """
+    start: int
+    target: int
+    target_points: int
+    name: str
+
+    def __init__(self, start: int, target: int, target_points: int, name: str) -> None:
+        """Initialize a new item.
+        """
+        # TODO: WRITE WHERE I GOT THIS FROM (PYCHARM)
+        super().__init__(start, target, target_points, name)
+
+    def print_map(self, map_list: list[list[int]]) -> None:
+        """
+        print the map lol
+        """
+        print("□ are blocked spaces.")
+        for row in map_list:
+            for item in row:
+                if item == -1:
+                    print('□', end=" ")
+                else:
+                    print(item, end=" ")
+            print()
+
+
+class Book(Item):
+    """
+    BOOK BOOK BOOK
+    """
+    start: int
+    target: int
+    target_points: int
+    name: str
+
+    def __init__(self, start: int, target: int, target_points: int, name: str) -> None:
+        """Initialize a new item.
+        """
+        # TODO: WRITE WHERE I GOT THIS FROM (PYCHARM)
+        super().__init__(start, target, target_points, name)
+
+    def read_book(self, book_name: str) -> None:
+        """
+            READ
+        """
+        if book_name == "How To Manage Your Time":
+            print("Woah! A ragged piece of paper falls out from the book. It says,")
+            print("Head over to a certain mysterious room. Location number [REDACTED]. Bring the book for a")
+            print("surprise. UGH! What location number! Where! There may be another clue or a map somewhere...")
+        elif book_name == "How to Determine The Best Number":
+            print("Wow, this book only has one page, one sentence. It reads, \"The best number is 5.\"")
+        elif book_name == "How to Pull All Nighters Gaming" or book_name == "How to Procrastinate":
+            print("Uh-oh. You feel not-so-knowledgeable. Your score seems to be getting lower.")
+            print("Maybe pick more helpful books to read.")
+        else:
+            print(f"You {book_name}. You are now more knowledgeable.")
 
 
 class Location:
@@ -76,7 +137,7 @@ class Location:
         - short_description != ''
     """
     location_num: int
-    num: int
+    available_score: int
     short_description: str
     long_description: str
     items: list[Item]
@@ -95,10 +156,6 @@ class Location:
         self.short_description = short_description
         self.items = []
         self.actions = []
-        # if items_list is not None:
-        #     self._items = self.available_items(items_list)
-        # if map_list is not None:
-        #     self.actions = self.available_actions(map_list)
 
         # NOTES:
         # Data that could be associated with each Location object:
@@ -119,9 +176,7 @@ class Location:
         # TODO: Complete this method
 
     def available_items(self, items_list: list[Item]) -> list[Item]:
-        """
-        WRITE DOCSTRING
-        # TODO: confirm specs and write this
+        """ Returns a list of items available to pick up at this location
         """
         items = []
         for item in items_list:
@@ -143,14 +198,14 @@ class Location:
         # TODO: Complete this method, if you'd like or remove/replace it if you're not using it
         # implemented for movement
         directions = []
-        if x + 1 < len(map_list) and map_list[x + 1][y] != -1:
-            directions.append('go south')
-        if x - 1 >= 0 and map_list[x - 1][y] != -1:
-            directions.append('go north')
         if y + 1 < len(map_list[x]) and map_list[x][y + 1] != -1:
             directions.append('go east')
         if y - 1 >= 0 and map_list[x][y - 1] != -1:
             directions.append('go west')
+        if x + 1 < len(map_list) and map_list[x + 1][y] != -1:
+            directions.append('go south')
+        if x - 1 >= 0 and map_list[x - 1][y] != -1:
+            directions.append('go north')
         return directions
 
     def available_actions(self, items_list: list[Item], inventory: list[Item]) -> list[str]:
@@ -164,9 +219,13 @@ class Location:
         if len(inventory) > 0:
             actions.append('drop item')
         for item in inventory:
-            if item.name in ['map', 't-card', 'cheat sheet', 'lucky pen']:
-                actions.append('use item')
+            if item.name == 'Map':
+                actions.append('use map')
                 break
+        for item in self.available_items(items_list):
+            if isinstance(item, Book):
+                read_book = 'read ' + item.name
+                actions.append(read_book)
         return actions
 
 
@@ -236,14 +295,9 @@ class World:
     # TODO: Add methods for loading location data and item data (see note above).
     def load_locations(self, location_data: TextIO) -> list[Location]:
         """
-        WRITE THE DOCSTRING BUT LIKE IT PUTS THE LOCATIONS INTO A NESTED LIST
-        AND WE CAN ACCESS SPECIFIC ATRRIBUTES WITH SPECIFIC INDEXES RAHHHHHH
-
-        location_num: int
-        num: int
-        short_description: str
-        long_description: str
-        items: list[str]
+        Store locations from open file location_data as the locations attribute of this object, as a list
+        of Location objects of length 4, containing the location number, number of points earned for
+        visiting this location for the first time, short description, long description, in that order.
         """
         locations = []
         while True:
@@ -269,14 +323,19 @@ class World:
 
     def load_items(self, items_data: TextIO) -> list[Item]:
         """
-        WRITE DOCSTRING. CHANGES ITEMS.TXT INTO NESTED LIST
+        Store locations from open file location_data as the locations attribute of this object
         """
         items = []
         file = items_data.readlines()
         for line in file:
             elements = line.split()
             item_name = ' '.join(elements[3:])
-            item = Item(int(elements[0]), int(elements[1]), int(elements[2]), item_name)
+            if 'How to' in item_name:
+                item = Book(int(elements[0]), int(elements[1]), int(elements[2]), item_name)
+            elif item_name == 'Map':
+                item = Map(int(elements[0]), int(elements[1]), int(elements[2]), item_name)
+            else:
+                item = Item(int(elements[0]), int(elements[1]), int(elements[2]), item_name)
             items.append(item)
         return items
 
@@ -395,17 +454,16 @@ class Player:
                 break
 
         if item_to_pick_up:
-            if item_name == "bag":
+            if item_name == "Bag":
                 self.inventory_size = 3
-                print(" WOW You found DORA's bag! Now your inventory size increase to 3 :)")
+                print("WOW You found DORA's bag! Now your inventory size increase to 3 :)")
             if len(self.inventory) <= self.inventory_size:
                 self.inventory.append(item_to_pick_up)
                 location.items.remove(item_to_pick_up)
                 print(f"Picked up {item_name}.")
                 for item_in_list in items_list:
-                    if item_in_list.name == item_to_pick_up:
-                        item_in_list.start = '-2'
-
+                    if item_in_list.name == item_to_pick_up.name:
+                        item_in_list.start = -2
                 return True
             else:
                 print("Sorry, your bag is full :( You can't pick up ", item_name)
@@ -431,20 +489,23 @@ class Player:
             location.items.append(item_to_drop)
             print(f"Dropped {item_name}.")
             for item_in_list in items_list:
-                if item_in_list.name == item_to_drop:
+                if item_in_list.name == item_to_drop.name:
                     item_in_list.start = location.location_num
             return True
         else:
             print(f"You do not have {item_name} in your inventory.")
             return False
 
-    def use_item(self, item_name: str) -> None:
+    def use_item(self, item_name: str, the_map: Map, map_list: list[list[int]]) -> None:
         """
         Use the item in the inventory
+        # TODO: MAYBE DONT NEED
         """
-        if item_name in self.inventory:
+        if item_name in [item.name for item in self.inventory]:
             # Implement the logic for using the item
             print(f"Used {item_name}.")
+            if item_name == 'Map':
+                the_map.print_map(map_list)
         else:
             print("You don't have this item in your inventory.")
 
@@ -459,18 +520,32 @@ class Player:
         else:
             print("Your inventory is empty.")
 
-    def player_victory(self, location: Location, items_list: list[Item]) -> None:
+    def player_victory(self, location: Location, score: int) -> None:
         """
         Player achieve victory with specific condition.
         """
-        item_now = []
-        for item in location.items:
-            item_now.append(item.name)
+        inventory_items = [item.name for item in self.inventory]
 
-        # TODO: Change the following code later
-        if location.location_num == 2 and item_now == ['Cheat Sheet']:
+        # TODO: Change to all 3 items and reasonable score and correct location
+        correct_items = {item.name for item in location.items if location.location_num == item.target}
+        if correct_items == {'Cheat Sheet'}:
+            if score >= 1:
+                self.victory = True
+                print("Congratulations! You passed the exam!")
+            else:
+                print("You successfully took the exam, but you failed :(")
+                print("Next time, try exploring the campus more and look for items that will")
+                print("help you score better on the exam!")
+                exit()
+        # TODO: CHANGE TO LOCATION 9. 5 for testing
+        elif location.location_num == 5 and '"How to Manage Your Time"' in inventory_items:
             self.victory = True
-            print("Congratulations! You passed the exam!")
+            print("The time machine turns on. It makes some funky noises and turns off again.")
+            print("Unconvinced, you check the time. It's the day after the exam!")
+            print("You brought the correct book to the time machine! That's its key!")
+            print("You receive an email from CrowdMark that your exam was graded. You check and... you")
+            print("scored amazing! Maybe it's some butterfly effect from time travel.")
+
 
 if __name__ == '__main__':
     import doctest
@@ -485,3 +560,4 @@ if __name__ == '__main__':
     python_ta.check_all(config={
         'max-line-length': 120
     })
+ 
