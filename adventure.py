@@ -151,10 +151,11 @@ if __name__ == "__main__":
             for item in p.inventory:
                 if item.name == 'Map':
                     item.print_map(map_list)
+                    current_moves += 1
         if 'read "How to' in choice:
             for item in items_list:
                 if item.name == choice[5:]:
-                    item.read_book(choice)
+                    item.read_book(choice[5:])
                     score += item.target_points
                     item.target_points = 0
         if choice.lower() == "menu":
