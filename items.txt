@@ -1,20 +1,20 @@
-1 2 5 Cheat Sheet
-1 2 5 Lucky Pen
-2 10 5 T-Card
-1 1 1 Map
-1 1 1 Bag
-3 -2 0 "How to Survive an Apocalypse"
-3 -2 3 "How to Determine The Best Number"
-3 -2 0 "How to Count to 10"
-3 -2 0 "How to Talk to Your Cat"
-3 -2 5 "How to Make a TA Love You"
-3 -2 -2 "How to Pull All Nighters Gaming"
-3 -2 0 "How to Train Your Unicorn"
-3 -2 0 "How to Be a Professional Sloth"
-3 -2 -2 "How to Procrastinate"
-3 -2 2 "How to Pass Every Exam"
-3 -2 0 "How to Debug Your Life"
-3 5 5 "How to Manage Your Time"
-3 -2 0 "How to Determine The Best Number"
-3 -2 0 "How to Count to 10"
-3 -2 5 "How to Score Exactly 92 On Every Exam"
+8 20 5 Cheat Sheet
+13 20 5 Lucky Pen
+15 20 5 T-Card
+12 1 1 Map
+11 -2 1 Bag
+9 -2 0 "How to Survive an Apocalypse"
+9 -2 3 "How to Determine The Best Number"
+9 -2 0 "How to Count to 10"
+9 -2 0 "How to Talk to Your Cat"
+9 -2 5 "How to Make a TA Love You"
+9 -2 -2 "How to Pull All Nighters Gaming"
+9 -2 0 "How to Train Your Unicorn"
+9 -2 0 "How to Be a Professional Sloth"
+9 -2 -2 "How to Procrastinate"
+9 -2 2 "How to Pass Every Exam"
+9 -2 0 "How to Debug Your Life"
+9 5 5 "How to Manage Your Time"
+9 -2 2 "How to Determine The Best Number"
+9 -2 0 "How to Count to 10"
+9 -2 5 "How to Score Exactly 92 On Every Exam"
