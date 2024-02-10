@@ -442,6 +442,7 @@ class Player:
         """
         self.move(0, 1)
 
+    # INVENTORY FUNCTIONS here:
     def remove_from_location(self, item_to_pick_up: Item, items_list: list[Item]) -> None:
         """
         Remove picked up item from its location
@@ -449,8 +450,7 @@ class Player:
         for item_in_list in items_list:
             if item_in_list.name == item_to_pick_up.name:
                 item_in_list.start = -2
-
-    # INVENTORY FUNCTIONS here:
+    
     def pick_up_item(self, item_name: str, location: Location, items_list: list[Item]) -> bool:
         """
         Add an item to the player's inventory.
