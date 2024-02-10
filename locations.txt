@@ -1,26 +1,67 @@
-LOCATION -1
+-1
 0
 That way is blocked.
 That way is blocked.
 END
 
-LOCATION 1
-0
+1
+1
 You are on the first floor of the Robarts Library. There is an empty study room to the South, an exit from the library to the East.
 You are on the first floor of the Robarts Library. It's usually crowded at this time of the day, but today it's eerily quiet.
 Only a few students are studying inside one of the study rooms. You better not disturb them. A librarian stands near the
 service desk, looking bored and sleepy. There is an empty study room to the South, an exit from the library to the East.
 END
 
-LOCATION 2
-0
+2
+1
 This study room is completely empty.
 You are in an empty study room. And by empty, we mean, absolutely empty. All the tables and chairs have been taken out,
 the whiteboards taken off the wall, not even the carpeting is left. Are they planning to do something else with this space?
 END
 
-LOCATION 3
-0
+3
+1
 You are outside the Robarts library.
 You are outside the Robarts library on a crowded street. There is a smell of coffee in the air.
+END
+
+4
+1
+You are on St. Geroge Street.
+You are on St. Geroge Street. LONG LNOG LONG #TODO: LONG!!!!!!!!
+END
+
+5
+1
+You are in a mysterious room with a time machine.
+You are in a mysterious room. You hear metallic noises and look over in that direction. A futuristic-looking
+pile of metal scraps enters your view. A red banner that says Time Machine hangs above. Hmmmm... peculiar design
+for a time machine. #TODO: WRITE THE DIRECTIONS AND STUFF
+END
+
+6
+1
+You are walking between shelves.
+You finally decided
+END
+
+7
+1
+You are on Huron Street.
+You are on Huron Street but longggggggggg description.
+END
+
+8
+1
+You are in a study room left by a MAT137 student.
+You are in a study room, but this one feels... stressful. It's strange, given this study room is also empty. The
+whiteboard is filled with Epsilon-Delta proofs. You physically cringe as memories of the course start flooding your
+mind. No more please.
+END
+
+9
+1
+You are between some pink shelves.
+You are between some shelves but these are pink! Bright neon pink shelves. Even the books are pink. Very interesting
+colour choice by the librarian. The librarian must love pink. You seem a little compelled to read these pink books.
 END
