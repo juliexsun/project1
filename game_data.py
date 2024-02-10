@@ -25,10 +25,15 @@ class Item:
     """A general item in our text adventure game world.
 
     Instance Attributes:
-        - # TODO
+        - start: the starting location number of the item (is updated when moved)
+        - target: the target location number of the item (-2 if none)
+        - target_points: the points given for picking up this item
+        - name: the name of the item
 
     Representation Invariants:
-        - # TODO
+        - 1 <= start <= 20
+        - -2 <= target <= 20
+        - name != ''
     """
     start: int
     target: int
@@ -54,13 +59,23 @@ class Item:
         self.name = name
 
     def read_book(self, book_name: str) -> None:
-        """#TODO: fuck man. pycharm told me to
+        """ Method to be overriden by child class Book
         """
 
 
 class Map(Item):
-    """
-    MAP MAP MAP MAP
+    """A Map item in our text adventure game world.
+
+    Instance Attributes:
+        - start: the starting location number of the item (is updated when moved)
+        - target: the target location number of the item (-2 if none)
+        - target_points: the points given for picking up this item
+        - name: the name of the item
+
+    Representation Invariants:
+        - 1 <= start <= 20
+        - -2 <= target <= 20
+        - name != ''
     """
     start: int
     target: int
@@ -68,14 +83,14 @@ class Map(Item):
     name: str
 
     def __init__(self, start: int, target: int, target_points: int, name: str) -> None:
-        """Initialize a new item.
+        """Initialize a new Map item.
+        Source: https://www.w3schools.com/python/python_inheritance.asp
         """
-        # TODO: WRITE WHERE I GOT THIS FROM (PYCHARM)
         super().__init__(start, target, target_points, name)
 
     def print_map(self, map_list: list[list[int]]) -> None:
         """
-        print the map lol
+        Prints out the 2D representation of the map with □ representing a blocked space.
         """
         print("□ represents a blocked space.\n")
         for row in map_list:
@@ -88,9 +103,19 @@ class Map(Item):
 
 
 class Book(Item):
-    """
-    BOOK BOOK BOOK
-    """
+    """A Book item in our text adventure game world.
+
+    Instance Attributes:
+        - start: the starting location number of the item (is updated when moved)
+        - target: the target location number of the item (-2 if none)
+        - target_points: the points given for picking up this item
+        - name: the name of the item
+
+    Representation Invariants:
+        - 1 <= start <= 20
+        - -2 <= target <= 20
+        - name != ''
+    """""
     start: int
     target: int
     target_points: int
@@ -98,42 +123,41 @@ class Book(Item):
 
     def __init__(self, start: int, target: int, target_points: int, name: str) -> None:
         """Initialize a new item.
+        Source: https://www.w3schools.com/python/python_inheritance.asp
         """
-        # TODO: WRITE WHERE I GOT THIS FROM (PYCHARM)
         super().__init__(start, target, target_points, name)
 
     def read_book(self, book_name: str) -> None:
+        """ Print corresponding results for reading any book.
         """
-            READ
-        """
-        if book_name == "How To Manage Your Time":
+        if book_name == '"How to Manage Your Time"':
             print("Woah! A ragged piece of paper falls out from the book. It says,")
             print("Head over to a certain mysterious room. Location number [REDACTED]. Bring the book for a")
             print("surprise. UGH! What location number! Where! There may be another clue or a map somewhere...")
-        elif book_name == "How to Determine The Best Number":
+        elif book_name == '"How to Determine The Best Number"':
             print("Wow, this book only has one page, one sentence. It reads, \"The best number is 5.\"")
         elif book_name in {'How to Pull All Nighters Gaming', 'How to Procrastinate'}:
             print("Uh-oh. You feel not-so-knowledgeable. Your score seems to be getting lower.")
             print("Maybe pick more helpful books to read.")
-        elif book_name == "How to Make a TA Love You":
+        elif book_name == '"How to Make a TA Love You"':
             print("Hmm... perhaps the TA will be less grumpy when marking your test now.")
         else:
-            print(f"You {book_name}. You are now more knowledgeable.")
+            print(f"You read {book_name}. You are now more knowledgeable.")
 
 
 class Location:
     """A location in our text adventure game world.
 
     Instance Attributes:
-        - long_description
-        - short_description
-        - location_num: the numerical representation of the location
-        - num: RANDOM NUMBER CHANGE LATER
-        - items:
-        - #TODO: BALABALA DO THIS
+        location_num: the location number
+        available_score: the score received for visiting this location
+        short_description: short description of this location
+        long_description: long description of this location
+        items: list of items available at this location
+        actions: list of actions available at this location
 
     Representation Invariants:
-        - location_num == -1 or location_num > 0
+        - location_num == -1 or 1 <= location_num <= 20
         - long_description != ''
         - short_description != ''
     """
@@ -144,12 +168,9 @@ class Location:
     items: list[Item]
     actions: list[str]
 
-    # does not initialize _items when using get_locations() from World class
-    # must initialize separately
     def __init__(self, location_num: int, available_score: int, short_description: str, long_description: str) -> None:
-        """Initialize a new location.
-
-        # TODO Add more details here about the initialization if needed
+        """Initialize a new location without items and actions (to be initialized when creating an instance
+        using available_items and available_directions and available_actions methods)
         """
         self.location_num = location_num
         self.available_score = available_score
@@ -174,8 +195,6 @@ class Location:
         # The only thing you must NOT change is the name of this class: Location.
         # All locations in your game MUST be represented as an instance of this class.
 
-        # TODO: Complete this method
-
     def available_items(self, items_list: list[Item]) -> list[Item]:
         """ Returns a list of items available to pick up at this location
         """
@@ -187,16 +206,13 @@ class Location:
 
     def available_directions(self, map_list: list[list[int]], x: int, y: int) -> list[str]:
         """
-        Return the available actions in this location.
-        The actions should depend on the items available in the location
-        and the x,y position of this location on the world map.
+        Return the list of available directions in this location depending
+        on the x,y position of this location on the world map.
         """
-
         # NOTE: This is just a suggested method
         # i.e. You may remove/modify/rename this as you like, and complete the
         # function header (e.g. add in parameters, complete the type contract) as needed
 
-        # TODO: Complete this method, if you'd like or remove/replace it if you're not using it
         # implemented for movement
         directions = []
         if y + 1 < len(map_list[x]) and map_list[x][y + 1] != -1:
@@ -211,8 +227,7 @@ class Location:
 
     def available_actions(self, items_list: list[Item], inventory: list[Item]) -> list[str]:
         """
-        pick up, read, that type of thing
-        # TODO: TEST THIS
+        Return the list of available actions at this location including pick up, drop, map, and read.
         """
         actions = []
         if len(self.available_items(items_list)) > 0:
@@ -293,12 +308,11 @@ class World:
             the_map.append(row)
         return the_map
 
-    # TODO: Add methods for loading location data and item data (see note above).
     def load_locations(self, location_data: TextIO) -> list[Location]:
         """
         Store locations from open file location_data as the locations attribute of this object, as a list
         of Location objects of length 4, containing the location number, number of points earned for
-        visiting this location for the first time, short description, long description, in that order.
+        visiting this location for the first time, short description, long description attributes, in that order.
         """
         locations = []
         while True:
@@ -324,7 +338,9 @@ class World:
 
     def load_items(self, items_data: TextIO) -> list[Item]:
         """
-        Store items from open file location_data as the items attribute of the Items class 
+        Store items from open file location_data as the items attribute of this object, as a list of
+        Item objects or its child class objects with starting location, target location, points granted
+        for picking up the item, and item name attributes, in that order.
         """
         items = []
         file = items_data.readlines()
@@ -346,26 +362,13 @@ class World:
          that position. Otherwise, return None. (Remember, locations represented by the number -1 on the map should
          return None.)
         """
-
-        # TODO: Complete this method as specified. Do not modify any of this function's specifications.
-        try:
-            location_num = self.map[x][y]
-            if location_num == -1:
-                return None
-            for location in self.locations:
-                if location.location_num == location_num:
-                    return location
+        location_num = self.map[x][y]
+        if location_num == -1:
             return None
-        except IndexError:
-            return None
-
-    def valid_location(self, x: int, y: int) -> bool:
-        """Return True if the location at (x, y) is valid and within the map boundaries.
-        """
-        if 0 <= x < len(self.map) and 0 <= y < len(self.map[0]):
-            return self.map[x][y] != -1
-        else:
-            return False
+        for location in self.locations:
+            if location.location_num == location_num:
+                return location
+        return None
 
 
 class Player:
@@ -389,7 +392,7 @@ class Player:
     world: World
     inventory_size: int
 
-    def __init__(self, x: int, y: int, world) -> None:
+    def __init__(self, x: int, y: int, world: World) -> None:
         """
         Initializes a new Player at position (x, y).
         """
@@ -412,11 +415,8 @@ class Player:
         """
         new_x = self.x + dx
         new_y = self.y + dy
-        if self.world.valid_location(new_x, new_y):
-            self.x = new_x
-            self.y = new_y
-        else:
-            print("That way is blocked")
+        self.x = new_x
+        self.y = new_y
 
     def go_north(self) -> None:
         """
@@ -450,7 +450,7 @@ class Player:
         for item_in_list in items_list:
             if item_in_list.name == item_to_pick_up.name:
                 item_in_list.start = -2
-    
+
     def pick_up_item(self, item_name: str, location: Location, items_list: list[Item]) -> bool:
         """
         Add an item to the player's inventory.
@@ -485,7 +485,7 @@ class Player:
     def drop_item(self, item_name: str, location: Location, items_list: list[Item]) -> bool:
         """
         Drop the specified item from the player's inventory
-        (plus: adding it back to the current location).
+        (plus: adding it to the current location).
         """
         item_to_drop = None
         for item in self.inventory:
@@ -507,19 +507,6 @@ class Player:
         else:
             print(f"You do not have {item_name} in your inventory.")
             return False
-
-    # def use_item(self, item_name: str, the_map: Map, map_list: list[list[int]]) -> None:
-    #     """
-    #     Use the item in the inventory
-    #     # TODO: MAYBE DONT NEED
-    #     """
-    #     if item_name in [item.name for item in self.inventory]:
-    #         # Implement the logic for using the item
-    #         print(f"Used {item_name}.")
-    #         if item_name == 'Map':
-    #             the_map.print_map(map_list)
-    #     else:
-    #         print("You don't have this item in your inventory.")
 
     def view_inventory(self) -> None:
         """
@@ -549,7 +536,6 @@ class Player:
                 print("Next time, try exploring the campus more and look for items that will")
                 print("help you score better on the exam!")
                 exit()
-        # TODO: CHANGE TO LOCATION 9. 5 for testing
         elif location.location_num == 5 and '"How to Manage Your Time"' in inventory_items:
             self.victory = True
             print("The time machine turns on. It makes some funky noises and turns off again.")
