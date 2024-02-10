@@ -380,6 +380,9 @@ class Player:
         - y: The y-coordinate of the player's current position in the game world.
         - inventory: A list that stores items that the player has collected during the game.
         - victory: Set to be False, and Ture if the player wins.
+        - world: World object
+        - inventory_size: the size of the player's inventory
+
 
     Representation Invariants:
         - x >= 0
@@ -528,7 +531,7 @@ class Player:
         # TODO: Change to all 3 items and reasonable score and correct location
         correct_items = {item.name for item in location.items if location.location_num == item.target}
         if correct_items == {'Cheat Sheet', 'T-Card', 'Lucky Pen'}:
-            if score >= 1:
+            if score >= 35:
                 self.victory = True
                 print("Congratulations! You scored great on the exam!")
             else:
