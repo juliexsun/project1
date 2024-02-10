@@ -25,7 +25,8 @@ from game_data import Location, Item, Player, World, Book
 # Note: You may add helper functions, classes, etc. here as needed
 def print_location_description(the_location: Location) -> None:
     """
-    TODO:
+    Prints short or long location description depending on if it's the player's
+    first visit or not.
     """
     print(f"LOCATION {the_location.location_num}\n")
     if the_location.available_score > 0:
@@ -99,7 +100,6 @@ if __name__ == "__main__":
 
         print("moves: ", current_moves, "/", max_moves)
 
-        # TODO: ENTER CODE HERE TO PRINT LOCATION DESCRIPTION
         # Depending on whether or not it's been visited before,
         # print either full description (first time visit) or brief description (every subsequent visit)
 
@@ -182,14 +182,3 @@ if __name__ == "__main__":
             print("moves: ", current_moves, "/", max_moves)
             print("The maximum number of moves is reached. You missed your exam! Try again :)")
             exit()
-
-    # TODO: CALL A FUNCTION HERE TO HANDLE WHAT HAPPENS UPON THE PLAYER'S CHOICE
-    #  REMEMBER: the location = w.get_location(p.x, p.y) at the top of this loop will update the location if
-    #  the choice the player made was just a movement, so only updating player's position is enough to change the
-    #  location to the next appropriate location
-    #  Possibilities:
-    #  A helper function such as do_action(w, p, location, choice)
-    #  OR A method in World class w.do_action(p, location, choice)
-    #  OR Check what type of action it is, then modify only player or location accordingly
-    #  OR Method in Player class for move or updating inventory
-    #  OR Method in Location class for updating location item info, or other location data etc....
