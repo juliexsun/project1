@@ -116,6 +116,8 @@ class Book(Item):
         elif book_name == "How to Pull All Nighters Gaming" or book_name == "How to Procrastinate":
             print("Uh-oh. You feel not-so-knowledgeable. Your score seems to be getting lower.")
             print("Maybe pick more helpful books to read.")
+        elif book_name == "How to Make a TA Love You":
+            print("Hmm... perhaps the TA will be less grumpy when marking your test now.")
         else:
             print(f"You {book_name}. You are now more knowledgeable.")
 
@@ -560,4 +562,3 @@ if __name__ == '__main__':
     python_ta.check_all(config={
         'max-line-length': 120
     })
- 
