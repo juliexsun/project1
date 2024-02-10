@@ -38,8 +38,6 @@ def prompt_direction(the_location: Location, the_map_list: list[list[int]], x: i
     """ Prompts the player to choose an action and prints out available directions to move in
     current location.
     """
-    if any(isinstance(the_item, Book) for the_item in location.items):
-        print("!!!Please enter read actions exactly as formatted.")
     print("What do you want to do? \n")
     print("menu")
     for direction in the_location.available_directions(the_map_list, x, y):
@@ -52,6 +50,9 @@ def prompt_action(the_location: Location, items_lst: list[Item], inventory: list
     """
     for action in the_location.available_actions(items_lst, inventory):
         print(action)
+    if any(isinstance(the_item, Book) for the_item in location.items):
+        print()
+        print("!!!Please enter read actions exactly as formatted.")
     the_choice = input("\nEnter action: ")
     return the_choice
 
