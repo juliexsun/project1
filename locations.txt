@@ -6,10 +6,9 @@ END
 
 1
 1
-You are on the first floor of the Robarts Library. There is an empty study room to the South, an exit from the library to the East.
-You are on the first floor of the Robarts Library. It's usually crowded at this time of the day, but today it's eerily quiet.
-Only a few students are studying inside one of the study rooms. You better not disturb them. A librarian stands near the
-service desk, looking bored and sleepy. There is an empty study room to the South, an exit from the library to the East.
+You are on the first floor of the Robarts Library.
+You are on the first floor of the Robarts Library. There are some bookshelves here. Maybe you can find some useful books
+one of the shelves... Try to find them!!
 END
 
 2
@@ -22,13 +21,13 @@ END
 3
 1
 You are outside the Robarts library.
-You are outside the Robarts library on a crowded street. There is a smell of coffee in the air.
+You are outside the Robarts library on a crowded street. There is a smell of freedom in the air.
 END
 
 4
 1
 You are on St. Geroge Street.
-You are on St. Geroge Street. LONG LNOG LONG #TODO: LONG!!!!!!!!
+You are on St. Geroge Street. You walk through this street every day during weekdays. It's the main road of UofT.
 END
 
 5
@@ -36,19 +35,19 @@ END
 You are in a mysterious room with a time machine.
 You are in a mysterious room. You hear metallic noises and look over in that direction. A futuristic-looking
 pile of metal scraps enters your view. A red banner that says Time Machine hangs above. Hmmmm... peculiar design
-for a time machine. #TODO: WRITE THE DIRECTIONS AND STUFF
+for a time machine.
 END
 
 6
 1
 You are walking between shelves.
-You finally decided
+You are walking between shelves. You look around but the shelves are empty. Maybe the books are hided somewhere else...?
 END
 
 7
 1
 You are on Huron Street.
-You are on Huron Street but longggggggggg description.
+You are on Huron Street. The street is lined with houses. It may lead to some important location ( ̀⌄ ́).
 END
 
 8
@@ -64,4 +63,77 @@ END
 You are between some pink shelves.
 You are between some shelves but these are pink! Bright neon pink shelves. Even the books are pink. Very interesting
 colour choice by the librarian. The librarian must love pink. You seem a little compelled to read these pink books.
+END
+
+10
+1
+You are on Spadina Street.
+You are on Spadina Street! There are some excellent restaurant here. The foods smell so good, and you feel a little
+bit hungry. But remember! You have more important things to do!!
+END
+
+11
+1
+You are in the Bahen Centre.
+You are in the Bahen Centre. It's a good space for Computer Science student... Student Union offers some snacks here!
+END
+
+12
+1
+You are in the Health Science Building.
+You are in the Health Science Building. You have CSC lectures in this building. The internet here is so BAD...!
+END
+
+13
+1
+You are in the Myhal Centre.
+You are in the Myhal Centre. You find some engineering students struggling with their homework. They have no time to
+chat with you.
+END
+
+14
+1
+You are in the Convocation Hall.
+You are in the Convocation Hall. Convocation Hall holds some sepcial ceremony. For example, graduation!!
+END
+
+15
+1
+You are in the Medical Science Building.
+You are in the Medical Science Building. Bacicly a building for medical science students.
+You found nothing special here.
+END
+
+16
+1
+You are in front of the Starbucks.
+You are in front of the Starbucks. This is a Starbucks inside MS. BUT you don't have money inside your pockets...
+You cry and walk by :(
+END
+
+17
+1
+You are in the Victory College.
+You are in the Victory College. The building is full of histories. Just look up to see the stained-glass from the
+ground level. Looks wonderful!
+END
+
+18
+1
+You are in the Hart House.
+You are in the Hart House. You always go to the gym inside Hart House. You look around and find nothing special.
+END
+
+19
+1
+You are in the Queens Park.
+You are in the Queens Park. Some people are playing with their dogs! Soooo cute (^з^)
+END
+
+20
+10
+You are in Exam Centre!
+You are in Exam Centre! Finally... You arrive on time (^_^)v! The TA asks you to DROP your T-card, Cheat Sheet, Lucky
+Pen on your desk. Please make sure you have everything prepared in your bag (or you can only watch other students
+taking their exams).
 END
