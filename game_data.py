@@ -525,7 +525,6 @@ class Player:
         """
         inventory_items = [item.name for item in self.inventory]
 
-        # TODO: Change to all 3 items and reasonable score and correct location
         correct_items = {item.name for item in location.items if location.location_num == item.target}
         if correct_items == {'Cheat Sheet', 'T-Card', 'Lucky Pen'}:
             if score >= 35:
@@ -543,18 +542,3 @@ class Player:
             print("You brought the correct book to the time machine! That's its key!")
             print("You receive an email from CrowdMark that your exam was graded. You check and... you")
             print("scored amazing! Maybe it's some butterfly effect from time travel.")
-
-
-if __name__ == '__main__':
-    import doctest
-
-    doctest.testmod(verbose=True)
-
-    # When you are ready to check your work with python_ta, uncomment the following lines.
-    # (In PyCharm, select the lines below and press Ctrl/Cmd + / to toggle comments.)
-    # You can use "Run file in Python Console" to run both pytest and PythonTA,
-    # and then also test your methods manually in the console.
-    import python_ta
-    python_ta.check_all(config={
-        'max-line-length': 120
-    })
